@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WC Cart Recovery
- * Plugin URI: https://example.com/wc-cart-recovery
+ * Plugin URI: https://github.com/arthurbarkhuysen/wc-cart-recovery
  * Description: Recover abandoned carts by sending reminder emails to customers who don't complete checkout.
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://example.com
+ * Author: Arthur Barkhuysen
+ * Author URI: https://github.com/arthurbarkhuysen
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wc-cart-recovery
