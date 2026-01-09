@@ -1,0 +1,177 @@
+/**
+ * Admin Styles
+ *
+ * @package WC_Cart_Recovery
+ */
+
+/* Admin wrap */
+.wccr-admin-wrap {
+    margin-top: 20px;
+}
+
+.wccr-admin-content {
+    margin-top: 20px;
+}
+
+/* Statistics grid */
+.wccr-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.wccr-stat-box {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+}
+
+.wccr-stat-box-wide {
+    grid-column: span 2;
+}
+
+.wccr-stat-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #646970;
+    font-weight: 400;
+}
+
+.wccr-stat-number {
+    font-size: 32px;
+    font-weight: 600;
+    color: #1d2327;
+    display: block;
+}
+
+.wccr-stat-success {
+    color: #00a32a;
+}
+
+.wccr-stat-warning {
+    color: #dba617;
+}
+
+.wccr-stat-error {
+    color: #d63638;
+}
+
+/* Status badges */
+.wccr-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.wccr-status-abandoned {
+    background-color: #fcf0f1;
+    color: #d63638;
+}
+
+.wccr-status-email-sent {
+    background-color: #fcf9e8;
+    color: #996800;
+}
+
+.wccr-status-recovered {
+    background-color: #edfaef;
+    color: #00a32a;
+}
+
+.wccr-status-unsubscribed {
+    background-color: #f0f0f1;
+    color: #646970;
+}
+
+/* List table adjustments */
+.wccr-admin-wrap .wp-list-table {
+    margin-top: 15px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-cb {
+    width: 30px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-customer {
+    width: 120px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-email {
+    width: 180px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-cart_total {
+    width: 100px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-products {
+    width: 25%;
+}
+
+.wccr-admin-wrap .wp-list-table .column-status {
+    width: 100px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-created_at {
+    width: 120px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-email_sent {
+    width: 120px;
+}
+
+.wccr-admin-wrap .wp-list-table .column-actions {
+    width: 150px;
+}
+
+/* Delete link */
+.wccr-delete {
+    color: #b32d2e;
+}
+
+.wccr-delete:hover {
+    color: #a00;
+}
+
+/* Form table adjustments */
+.wccr-admin-wrap .form-table th {
+    width: 200px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+    .wccr-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wccr-stat-box-wide {
+        grid-column: span 1;
+    }
+
+    .wccr-stat-number {
+        font-size: 24px;
+    }
+}
+
+/* Nav tabs spacing */
+.wccr-admin-wrap .nav-tab-wrapper {
+    margin-bottom: 0;
+}
+
+/* Filter alignment */
+.wccr-admin-wrap .tablenav .actions {
+    padding: 8px 0;
+}
+
+/* Settings page link */
+.wccr-admin-wrap hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #c3c4c7;
+}
