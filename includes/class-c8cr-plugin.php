@@ -146,7 +146,7 @@ class C8CR_Plugin {
         }
 
         wp_enqueue_script(
-            'wccr-guest-email-capture',
+            'c8cr-guest-email-capture',
             C8CR_PLUGIN_URL . 'assets/js/guest-email-capture.js',
             array( 'jquery' ),
             C8CR_VERSION,
@@ -154,7 +154,7 @@ class C8CR_Plugin {
         );
 
         wp_localize_script(
-            'wccr-guest-email-capture',
+            'c8cr-guest-email-capture',
             'c8cr_params',
             array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),

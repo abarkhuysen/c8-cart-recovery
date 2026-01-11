@@ -264,10 +264,10 @@ class C8CR_Admin_List_Table extends WP_List_Table {
      */
     public function column_status( $item ) {
         $statuses = array(
-            'abandoned'    => '<span class="wccr-status wccr-status-abandoned">' . esc_html__( 'Abandoned', 'c8-cart-recovery' ) . '</span>',
-            'email_sent'   => '<span class="wccr-status wccr-status-email-sent">' . esc_html__( 'Email Sent', 'c8-cart-recovery' ) . '</span>',
-            'recovered'    => '<span class="wccr-status wccr-status-recovered">' . esc_html__( 'Recovered', 'c8-cart-recovery' ) . '</span>',
-            'unsubscribed' => '<span class="wccr-status wccr-status-unsubscribed">' . esc_html__( 'Unsubscribed', 'c8-cart-recovery' ) . '</span>',
+            'abandoned'    => '<span class="c8cr-status c8cr-status-abandoned">' . esc_html__( 'Abandoned', 'c8-cart-recovery' ) . '</span>',
+            'email_sent'   => '<span class="c8cr-status c8cr-status-email-sent">' . esc_html__( 'Email Sent', 'c8-cart-recovery' ) . '</span>',
+            'recovered'    => '<span class="c8cr-status c8cr-status-recovered">' . esc_html__( 'Recovered', 'c8-cart-recovery' ) . '</span>',
+            'unsubscribed' => '<span class="c8cr-status c8cr-status-unsubscribed">' . esc_html__( 'Unsubscribed', 'c8-cart-recovery' ) . '</span>',
         );
 
         return isset( $statuses[ $item->status ] ) ? $statuses[ $item->status ] : esc_html( $item->status );
@@ -355,7 +355,7 @@ class C8CR_Admin_List_Table extends WP_List_Table {
         );
 
         $actions[] = sprintf(
-            '<a href="%s" class="wccr-delete" onclick="return confirm(\'%s\');">%s</a>',
+            '<a href="%s" class="c8cr-delete" onclick="return confirm(\'%s\');">%s</a>',
             esc_url( $delete_url ),
             esc_js( __( 'Are you sure you want to delete this abandoned cart?', 'c8-cart-recovery' ) ),
             esc_html__( 'Delete', 'c8-cart-recovery' )

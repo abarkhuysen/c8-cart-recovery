@@ -65,7 +65,7 @@ class C8CR_Admin {
         }
 
         wp_enqueue_style(
-            'wccr-admin',
+            'c8cr-admin',
             C8CR_PLUGIN_URL . 'assets/css/admin.css',
             array(),
             C8CR_VERSION
@@ -184,7 +184,7 @@ class C8CR_Admin {
         $current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'carts';
 
         ?>
-        <div class="wrap wccr-admin-wrap">
+        <div class="wrap c8cr-admin-wrap">
             <h1><?php esc_html_e( 'Abandoned Carts', 'c8-cart-recovery' ); ?></h1>
 
             <nav class="nav-tab-wrapper woo-nav-tab-wrapper">
@@ -202,7 +202,7 @@ class C8CR_Admin {
                 </a>
             </nav>
 
-            <div class="wccr-admin-content">
+            <div class="c8cr-admin-content">
                 <?php
                 switch ( $current_tab ) {
                     case 'stats':
@@ -244,61 +244,61 @@ class C8CR_Admin {
         $stats = C8CR_Cron_Handler::get_statistics();
 
         ?>
-        <div class="wccr-stats-grid">
-            <div class="wccr-stat-box">
+        <div class="c8cr-stats-grid">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Total Abandoned', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number"><?php echo esc_html( $stats['total_abandoned'] ); ?></span>
+                <span class="c8cr-stat-number"><?php echo esc_html( $stats['total_abandoned'] ); ?></span>
             </div>
 
-            <div class="wccr-stat-box">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Total Recovered', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number wccr-stat-success"><?php echo esc_html( $stats['total_recovered'] ); ?></span>
+                <span class="c8cr-stat-number c8cr-stat-success"><?php echo esc_html( $stats['total_recovered'] ); ?></span>
             </div>
 
-            <div class="wccr-stat-box">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Recovery Rate', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number"><?php echo esc_html( $stats['recovery_rate'] ); ?>%</span>
+                <span class="c8cr-stat-number"><?php echo esc_html( $stats['recovery_rate'] ); ?>%</span>
             </div>
 
-            <div class="wccr-stat-box">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Emails Sent', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number"><?php echo esc_html( $stats['total_email_sent'] ); ?></span>
+                <span class="c8cr-stat-number"><?php echo esc_html( $stats['total_email_sent'] ); ?></span>
             </div>
 
-            <div class="wccr-stat-box wccr-stat-box-wide">
+            <div class="c8cr-stat-box c8cr-stat-box-wide">
                 <h3><?php esc_html_e( 'Abandoned Cart Value', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number wccr-stat-warning"><?php echo wp_kses_post( wc_price( $stats['abandoned_value'] ) ); ?></span>
+                <span class="c8cr-stat-number c8cr-stat-warning"><?php echo wp_kses_post( wc_price( $stats['abandoned_value'] ) ); ?></span>
             </div>
 
-            <div class="wccr-stat-box wccr-stat-box-wide">
+            <div class="c8cr-stat-box c8cr-stat-box-wide">
                 <h3><?php esc_html_e( 'Recovered Value', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number wccr-stat-success"><?php echo wp_kses_post( wc_price( $stats['recovered_value'] ) ); ?></span>
+                <span class="c8cr-stat-number c8cr-stat-success"><?php echo wp_kses_post( wc_price( $stats['recovered_value'] ) ); ?></span>
             </div>
         </div>
 
         <h2><?php esc_html_e( 'Today', 'c8-cart-recovery' ); ?></h2>
-        <div class="wccr-stats-grid">
-            <div class="wccr-stat-box">
+        <div class="c8cr-stats-grid">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Abandoned Today', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number"><?php echo esc_html( $stats['today_abandoned'] ); ?></span>
+                <span class="c8cr-stat-number"><?php echo esc_html( $stats['today_abandoned'] ); ?></span>
             </div>
 
-            <div class="wccr-stat-box">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Recovered Today', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number wccr-stat-success"><?php echo esc_html( $stats['today_recovered'] ); ?></span>
+                <span class="c8cr-stat-number c8cr-stat-success"><?php echo esc_html( $stats['today_recovered'] ); ?></span>
             </div>
         </div>
 
         <h2><?php esc_html_e( 'This Week', 'c8-cart-recovery' ); ?></h2>
-        <div class="wccr-stats-grid">
-            <div class="wccr-stat-box">
+        <div class="c8cr-stats-grid">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Abandoned This Week', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number"><?php echo esc_html( $stats['week_abandoned'] ); ?></span>
+                <span class="c8cr-stat-number"><?php echo esc_html( $stats['week_abandoned'] ); ?></span>
             </div>
 
-            <div class="wccr-stat-box">
+            <div class="c8cr-stat-box">
                 <h3><?php esc_html_e( 'Recovered This Week', 'c8-cart-recovery' ); ?></h3>
-                <span class="wccr-stat-number wccr-stat-success"><?php echo esc_html( $stats['week_recovered'] ); ?></span>
+                <span class="c8cr-stat-number c8cr-stat-success"><?php echo esc_html( $stats['week_recovered'] ); ?></span>
             </div>
         </div>
         <?php
