@@ -4,7 +4,7 @@
  *
  * Handles cart recovery via unique token URLs
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WCCR_Cart_Recovery class
+ * C8CR_Cart_Recovery class
  */
-class WCCR_Cart_Recovery {
+class C8CR_Cart_Recovery {
 
     /**
      * Constructor
@@ -38,7 +38,7 @@ class WCCR_Cart_Recovery {
      * Handle cart recovery request
      */
     public function handle_recovery_request() {
-        if ( ! isset( $_GET['wccr_recover_cart'] ) ) {
+        if ( ! isset( $_GET['c8cr_recover_cart'] ) ) {
             return;
         }
 
@@ -47,24 +47,24 @@ class WCCR_Cart_Recovery {
             return;
         }
 
-        $token = sanitize_text_field( wp_unslash( $_GET['wccr_recover_cart'] ) );
+        $token = sanitize_text_field( wp_unslash( $_GET['c8cr_recover_cart'] ) );
 
         if ( empty( $token ) ) {
             return;
         }
 
         // Get the abandoned cart
-        $cart = WCCR_Plugin::get_cart_by_token( $token );
+        $cart = C8CR_Plugin::get_cart_by_token( $token );
 
         if ( ! $cart ) {
-            wc_add_notice( __( 'Invalid or expired cart recovery link.', 'wc-cart-recovery' ), 'error' );
+            wc_add_notice( __( 'Invalid or expired cart recovery link.', 'c8-cart-recovery' ), 'error' );
             wp_safe_redirect( wc_get_page_permalink( 'shop' ) );
             exit;
         }
 
         // Check if cart is already recovered
         if ( $cart->status === 'recovered' ) {
-            wc_add_notice( __( 'This cart has already been recovered.', 'wc-cart-recovery' ), 'notice' );
+            wc_add_notice( __( 'This cart has already been recovered.', 'c8-cart-recovery' ), 'notice' );
             wp_safe_redirect( wc_get_checkout_url() );
             exit;
         }
@@ -72,7 +72,7 @@ class WCCR_Cart_Recovery {
         // Check if cart is too old (7 days)
         $cart_age = strtotime( current_time( 'mysql' ) ) - strtotime( $cart->created_at );
         if ( $cart_age > 7 * DAY_IN_SECONDS ) {
-            wc_add_notice( __( 'This cart recovery link has expired.', 'wc-cart-recovery' ), 'error' );
+            wc_add_notice( __( 'This cart recovery link has expired.', 'c8-cart-recovery' ), 'error' );
             wp_safe_redirect( wc_get_page_permalink( 'shop' ) );
             exit;
         }
@@ -84,10 +84,10 @@ class WCCR_Cart_Recovery {
         $this->mark_as_recovered( $cart->id );
 
         // Track recovery
-        do_action( 'wccr_cart_recovered', $cart );
+        do_action( 'c8cr_cart_recovered', $cart );
 
         // Add success notice
-        wc_add_notice( __( 'Your cart has been restored! Complete your checkout below.', 'wc-cart-recovery' ), 'success' );
+        wc_add_notice( __( 'Your cart has been restored! Complete your checkout below.', 'c8-cart-recovery' ), 'success' );
 
         // Redirect to checkout
         wp_safe_redirect( wc_get_checkout_url() );
@@ -183,7 +183,7 @@ class WCCR_Cart_Recovery {
      * Handle unsubscribe request
      */
     public function handle_unsubscribe_request() {
-        if ( ! isset( $_GET['wccr_unsubscribe'] ) ) {
+        if ( ! isset( $_GET['c8cr_unsubscribe'] ) ) {
             return;
         }
 
@@ -192,17 +192,17 @@ class WCCR_Cart_Recovery {
             return;
         }
 
-        $token = sanitize_text_field( wp_unslash( $_GET['wccr_unsubscribe'] ) );
+        $token = sanitize_text_field( wp_unslash( $_GET['c8cr_unsubscribe'] ) );
 
         if ( empty( $token ) ) {
             return;
         }
 
         // Get the abandoned cart
-        $cart = WCCR_Plugin::get_cart_by_token( $token );
+        $cart = C8CR_Plugin::get_cart_by_token( $token );
 
         if ( ! $cart ) {
-            wc_add_notice( __( 'Invalid unsubscribe link.', 'wc-cart-recovery' ), 'error' );
+            wc_add_notice( __( 'Invalid unsubscribe link.', 'c8-cart-recovery' ), 'error' );
             wp_safe_redirect( home_url() );
             exit;
         }
@@ -219,7 +219,7 @@ class WCCR_Cart_Recovery {
             array( '%d' )
         );
 
-        wc_add_notice( __( 'You have been unsubscribed from cart reminder emails.', 'wc-cart-recovery' ), 'success' );
+        wc_add_notice( __( 'You have been unsubscribed from cart reminder emails.', 'c8-cart-recovery' ), 'success' );
 
         wp_safe_redirect( home_url() );
         exit;
@@ -232,7 +232,7 @@ class WCCR_Cart_Recovery {
      * @return string
      */
     public static function get_recovery_url( $token ) {
-        return add_query_arg( 'wccr_recover_cart', $token, home_url( '/' ) );
+        return add_query_arg( 'c8cr_recover_cart', $token, home_url( '/' ) );
     }
 
     /**
@@ -242,6 +242,6 @@ class WCCR_Cart_Recovery {
      * @return string
      */
     public static function get_unsubscribe_url( $token ) {
-        return add_query_arg( 'wccr_unsubscribe', $token, home_url( '/' ) );
+        return add_query_arg( 'c8cr_unsubscribe', $token, home_url( '/' ) );
     }
 }

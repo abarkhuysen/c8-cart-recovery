@@ -4,7 +4,7 @@
  *
  * Tracks cart activity and saves abandoned cart data
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WCCR_Cart_Tracker class
+ * C8CR_Cart_Tracker class
  */
-class WCCR_Cart_Tracker {
+class C8CR_Cart_Tracker {
 
     /**
      * Constructor
@@ -28,7 +28,7 @@ class WCCR_Cart_Tracker {
      */
     private function init_hooks() {
         // Check if plugin is enabled
-        if ( get_option( 'wccr_enabled', 'yes' ) !== 'yes' ) {
+        if ( get_option( 'c8cr_enabled', 'yes' ) !== 'yes' ) {
             return;
         }
 
@@ -146,7 +146,7 @@ class WCCR_Cart_Tracker {
         $currency   = get_woocommerce_currency();
 
         // Check if cart already exists for this session
-        $existing_cart = WCCR_Plugin::get_cart_by_session( $session_id );
+        $existing_cart = C8CR_Plugin::get_cart_by_session( $session_id );
 
         // Get user data if logged in
         $user_id    = is_user_logged_in() ? get_current_user_id() : null;
@@ -186,7 +186,7 @@ class WCCR_Cart_Tracker {
             );
         } else {
             // Create new cart record
-            $recovery_token = WCCR_Plugin::generate_recovery_token();
+            $recovery_token = C8CR_Plugin::generate_recovery_token();
 
             $wpdb->insert(
                 $table_name,
@@ -225,7 +225,7 @@ class WCCR_Cart_Tracker {
         global $wpdb;
         $table_name = $wpdb->prefix . 'wc_abandoned_carts';
 
-        $existing_cart = WCCR_Plugin::get_cart_by_session( $session_id );
+        $existing_cart = C8CR_Plugin::get_cart_by_session( $session_id );
 
         if ( $existing_cart ) {
             $update_data = array( 'user_email' => $email );

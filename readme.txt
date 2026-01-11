@@ -1,4 +1,4 @@
-=== WC Cart Recovery ===
+=== Creative8 Cart Recovery ===
 Contributors: arthurbarkhuysen
 Donate link: https://example.com/donate
 Tags: woocommerce, abandoned cart, cart recovery, email, marketing
@@ -13,7 +13,7 @@ Recover abandoned carts by sending reminder emails to customers who don't comple
 
 == Description ==
 
-WC Cart Recovery helps you recover lost sales by automatically tracking abandoned shopping carts and sending recovery emails to customers who leave without completing their purchase.
+Creative8 Cart Recovery helps you recover lost sales by automatically tracking abandoned shopping carts and sending recovery emails to customers who leave without completing their purchase.
 
 **Features:**
 
@@ -103,4 +103,4 @@ Yes, from the abandoned carts list, you can resend recovery emails to individual
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of WC Cart Recovery. Install to start recovering abandoned carts.
+Initial release of Creative8 Cart Recovery. Install to start recovering abandoned carts.

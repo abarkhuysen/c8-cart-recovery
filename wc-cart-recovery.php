@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WC Cart Recovery
+ * Plugin Name: C8 Cart Recovery
  * Plugin URI: https://github.com/arthurbarkhuysen/wc-cart-recovery
  * Description: Recover abandoned carts by sending reminder emails to customers who don't complete checkout.
  * Version: 1.0.0
@@ -15,7 +15,7 @@
  * WC requires at least: 8.0
  * WC tested up to: 9.0
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,26 +23,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'WCCR_VERSION', '1.0.0' );
-define( 'WCCR_PLUGIN_FILE', __FILE__ );
-define( 'WCCR_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'WCCR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'WCCR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+define( 'C8CR_VERSION', '1.0.0' );
+define( 'C8CR_PLUGIN_FILE', __FILE__ );
+define( 'C8CR_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'C8CR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'C8CR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
  * Check if WooCommerce is active
  */
-function wccr_is_woocommerce_active() {
+function c8cr_is_woocommerce_active() {
     return class_exists( 'WooCommerce' );
 }
 
 /**
  * Display admin notice if WooCommerce is not active
  */
-function wccr_woocommerce_missing_notice() {
+function c8cr_woocommerce_missing_notice() {
     ?>
     <div class="notice notice-error">
-        <p><?php esc_html_e( 'WC Cart Recovery requires WooCommerce to be installed and activated.', 'wc-cart-recovery' ); ?></p>
+        <p><?php esc_html_e( 'C8 Cart Recovery requires WooCommerce to be installed and activated.', 'c8-cart-recovery' ); ?></p>
     </div>
     <?php
 }
@@ -50,64 +50,64 @@ function wccr_woocommerce_missing_notice() {
 /**
  * Initialize the plugin
  */
-function wccr_init() {
+function c8cr_init() {
     // Check for WooCommerce
-    if ( ! wccr_is_woocommerce_active() ) {
-        add_action( 'admin_notices', 'wccr_woocommerce_missing_notice' );
+    if ( ! c8cr_is_woocommerce_active() ) {
+        add_action( 'admin_notices', 'c8cr_woocommerce_missing_notice' );
         return;
     }
 
     // Load plugin classes
-    require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-plugin.php';
+    require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-plugin.php';
 
     // Initialize the plugin
-    WCCR_Plugin::instance();
+    C8CR_Plugin::instance();
 }
-add_action( 'plugins_loaded', 'wccr_init' );
+add_action( 'plugins_loaded', 'c8cr_init' );
 
 /**
  * Plugin activation hook
  */
-function wccr_activate() {
+function c8cr_activate() {
     // Check for WooCommerce
-    if ( ! wccr_is_woocommerce_active() ) {
+    if ( ! c8cr_is_woocommerce_active() ) {
         deactivate_plugins( plugin_basename( __FILE__ ) );
         wp_die(
-            esc_html__( 'WC Cart Recovery requires WooCommerce to be installed and activated.', 'wc-cart-recovery' ),
+            esc_html__( 'C8 Cart Recovery requires WooCommerce to be installed and activated.', 'c8-cart-recovery' ),
             'Plugin dependency check',
             array( 'back_link' => true )
         );
     }
 
     // Load plugin class for activation
-    require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-plugin.php';
+    require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-plugin.php';
 
     // Create database tables
-    WCCR_Plugin::create_tables();
+    C8CR_Plugin::create_tables();
 
     // Schedule cron events
-    WCCR_Plugin::schedule_cron();
+    C8CR_Plugin::schedule_cron();
 
     // Set default options
-    add_option( 'wccr_enabled', 'yes' );
-    add_option( 'wccr_abandonment_time', 60 ); // minutes
-    add_option( 'wccr_email_enabled', 'yes' );
-    add_option( 'wccr_cleanup_days', 30 ); // days to keep old records
+    add_option( 'c8cr_enabled', 'yes' );
+    add_option( 'c8cr_abandonment_time', 60 ); // minutes
+    add_option( 'c8cr_email_enabled', 'yes' );
+    add_option( 'c8cr_cleanup_days', 30 ); // days to keep old records
 
     // Flush rewrite rules
     flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'wccr_activate' );
+register_activation_hook( __FILE__, 'c8cr_activate' );
 
 /**
  * Plugin deactivation hook
  */
-function wccr_deactivate() {
+function c8cr_deactivate() {
     // Clear scheduled cron events
-    wp_clear_scheduled_hook( 'wccr_process_abandoned_carts' );
-    wp_clear_scheduled_hook( 'wccr_cleanup_old_carts' );
+    wp_clear_scheduled_hook( 'c8cr_process_abandoned_carts' );
+    wp_clear_scheduled_hook( 'c8cr_cleanup_old_carts' );
 }
-register_deactivation_hook( __FILE__, 'wccr_deactivate' );
+register_deactivation_hook( __FILE__, 'c8cr_deactivate' );
 
 /**
  * Declare HPOS compatibility

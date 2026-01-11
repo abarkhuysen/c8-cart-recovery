@@ -2,7 +2,7 @@
 /**
  * Main plugin class
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,49 +10,49 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WCCR_Plugin class
+ * C8CR_Plugin class
  */
-class WCCR_Plugin {
+class C8CR_Plugin {
 
     /**
      * Single instance of the class
      *
-     * @var WCCR_Plugin
+     * @var C8CR_Plugin
      */
     protected static $instance = null;
 
     /**
      * Cart tracker instance
      *
-     * @var WCCR_Cart_Tracker
+     * @var C8CR_Cart_Tracker
      */
     public $tracker;
 
     /**
      * Cart recovery instance
      *
-     * @var WCCR_Cart_Recovery
+     * @var C8CR_Cart_Recovery
      */
     public $recovery;
 
     /**
      * Cron handler instance
      *
-     * @var WCCR_Cron_Handler
+     * @var C8CR_Cron_Handler
      */
     public $cron;
 
     /**
      * Admin instance
      *
-     * @var WCCR_Admin
+     * @var C8CR_Admin
      */
     public $admin;
 
     /**
      * Main instance
      *
-     * @return WCCR_Plugin
+     * @return C8CR_Plugin
      */
     public static function instance() {
         if ( is_null( self::$instance ) ) {
@@ -73,14 +73,14 @@ class WCCR_Plugin {
      * Load required files
      */
     private function load_dependencies() {
-        require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-cart-tracker.php';
-        require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-cart-recovery.php';
-        require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-cron-handler.php';
+        require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-cart-tracker.php';
+        require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-cart-recovery.php';
+        require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-cron-handler.php';
         // Email class is loaded via woocommerce_email_classes filter to ensure WC_Email exists
 
         if ( is_admin() ) {
-            require_once WCCR_PLUGIN_PATH . 'includes/admin/class-wccr-admin.php';
-            require_once WCCR_PLUGIN_PATH . 'includes/admin/class-wccr-admin-list-table.php';
+            require_once C8CR_PLUGIN_PATH . 'includes/admin/class-c8cr-admin.php';
+            require_once C8CR_PLUGIN_PATH . 'includes/admin/class-c8cr-admin-list-table.php';
         }
     }
 
@@ -98,8 +98,8 @@ class WCCR_Plugin {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_scripts' ) );
 
         // Register AJAX handlers
-        add_action( 'wp_ajax_wccr_capture_email', array( $this, 'ajax_capture_email' ) );
-        add_action( 'wp_ajax_nopriv_wccr_capture_email', array( $this, 'ajax_capture_email' ) );
+        add_action( 'wp_ajax_c8cr_capture_email', array( $this, 'ajax_capture_email' ) );
+        add_action( 'wp_ajax_nopriv_c8cr_capture_email', array( $this, 'ajax_capture_email' ) );
 
         // Load text domain
         add_action( 'init', array( $this, 'load_textdomain' ) );
@@ -109,12 +109,12 @@ class WCCR_Plugin {
      * Initialize plugin components
      */
     public function init_components() {
-        $this->tracker  = new WCCR_Cart_Tracker();
-        $this->recovery = new WCCR_Cart_Recovery();
-        $this->cron     = new WCCR_Cron_Handler();
+        $this->tracker  = new C8CR_Cart_Tracker();
+        $this->recovery = new C8CR_Cart_Recovery();
+        $this->cron     = new C8CR_Cron_Handler();
 
         if ( is_admin() ) {
-            $this->admin = new WCCR_Admin();
+            $this->admin = new C8CR_Admin();
         }
     }
 
@@ -126,8 +126,8 @@ class WCCR_Plugin {
      */
     public function register_email_class( $email_classes ) {
         // Load the email class here when WC_Email is available
-        require_once WCCR_PLUGIN_PATH . 'includes/emails/class-wccr-email-abandoned-cart.php';
-        $email_classes['WCCR_Email_Abandoned_Cart'] = new WCCR_Email_Abandoned_Cart();
+        require_once C8CR_PLUGIN_PATH . 'includes/emails/class-c8cr-email-abandoned-cart.php';
+        $email_classes['C8CR_Email_Abandoned_Cart'] = new C8CR_Email_Abandoned_Cart();
         return $email_classes;
     }
 
@@ -141,24 +141,24 @@ class WCCR_Plugin {
         }
 
         // Check if plugin is enabled
-        if ( get_option( 'wccr_enabled', 'yes' ) !== 'yes' ) {
+        if ( get_option( 'c8cr_enabled', 'yes' ) !== 'yes' ) {
             return;
         }
 
         wp_enqueue_script(
             'wccr-guest-email-capture',
-            WCCR_PLUGIN_URL . 'assets/js/guest-email-capture.js',
+            C8CR_PLUGIN_URL . 'assets/js/guest-email-capture.js',
             array( 'jquery' ),
-            WCCR_VERSION,
+            C8CR_VERSION,
             true
         );
 
         wp_localize_script(
             'wccr-guest-email-capture',
-            'wccr_params',
+            'c8cr_params',
             array(
                 'ajax_url' => admin_url( 'admin-ajax.php' ),
-                'nonce'    => wp_create_nonce( 'wccr_capture_email' ),
+                'nonce'    => wp_create_nonce( 'c8cr_capture_email' ),
             )
         );
     }
@@ -167,7 +167,7 @@ class WCCR_Plugin {
      * AJAX handler for capturing guest email
      */
     public function ajax_capture_email() {
-        check_ajax_referer( 'wccr_capture_email', 'nonce' );
+        check_ajax_referer( 'c8cr_capture_email', 'nonce' );
 
         $email      = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
         $first_name = isset( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) : '';
@@ -193,9 +193,9 @@ class WCCR_Plugin {
      */
     public function load_textdomain() {
         load_plugin_textdomain(
-            'wc-cart-recovery',
+            'c8-cart-recovery',
             false,
-            dirname( WCCR_PLUGIN_BASENAME ) . '/languages'
+            dirname( C8CR_PLUGIN_BASENAME ) . '/languages'
         );
     }
 
@@ -238,7 +238,7 @@ class WCCR_Plugin {
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta( $sql );
 
-        update_option( 'wccr_db_version', WCCR_VERSION );
+        update_option( 'c8cr_db_version', C8CR_VERSION );
     }
 
     /**
@@ -249,13 +249,13 @@ class WCCR_Plugin {
         add_filter( 'cron_schedules', array( __CLASS__, 'add_cron_interval' ) );
 
         // Schedule abandoned cart processing
-        if ( ! wp_next_scheduled( 'wccr_process_abandoned_carts' ) ) {
-            wp_schedule_event( time(), 'fifteen_minutes', 'wccr_process_abandoned_carts' );
+        if ( ! wp_next_scheduled( 'c8cr_process_abandoned_carts' ) ) {
+            wp_schedule_event( time(), 'fifteen_minutes', 'c8cr_process_abandoned_carts' );
         }
 
         // Schedule cleanup of old carts
-        if ( ! wp_next_scheduled( 'wccr_cleanup_old_carts' ) ) {
-            wp_schedule_event( time(), 'daily', 'wccr_cleanup_old_carts' );
+        if ( ! wp_next_scheduled( 'c8cr_cleanup_old_carts' ) ) {
+            wp_schedule_event( time(), 'daily', 'c8cr_cleanup_old_carts' );
         }
     }
 
@@ -268,7 +268,7 @@ class WCCR_Plugin {
     public static function add_cron_interval( $schedules ) {
         $schedules['fifteen_minutes'] = array(
             'interval' => 900, // 15 minutes
-            'display'  => __( 'Every 15 Minutes', 'wc-cart-recovery' ),
+            'display'  => __( 'Every 15 Minutes', 'c8-cart-recovery' ),
         );
         return $schedules;
     }
@@ -343,6 +343,6 @@ class WCCR_Plugin {
      * @return string
      */
     public static function get_recovery_url( $token ) {
-        return add_query_arg( 'wccr_recover_cart', $token, home_url( '/' ) );
+        return add_query_arg( 'c8cr_recover_cart', $token, home_url( '/' ) );
     }
 }

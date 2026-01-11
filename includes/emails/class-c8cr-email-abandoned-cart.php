@@ -4,7 +4,7 @@
  *
  * Extends WC_Email to send cart abandonment reminder emails
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WCCR_Email_Abandoned_Cart class
+ * C8CR_Email_Abandoned_Cart class
  */
-class WCCR_Email_Abandoned_Cart extends WC_Email {
+class C8CR_Email_Abandoned_Cart extends WC_Email {
 
     /**
      * Cart data object
@@ -48,13 +48,13 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
      * Constructor
      */
     public function __construct() {
-        $this->id             = 'wccr_abandoned_cart';
+        $this->id             = 'c8cr_abandoned_cart';
         $this->customer_email = true;
-        $this->title          = __( 'Abandoned Cart Reminder', 'wc-cart-recovery' );
-        $this->description    = __( 'Reminder emails sent to customers who abandon their cart.', 'wc-cart-recovery' );
+        $this->title          = __( 'Abandoned Cart Reminder', 'c8-cart-recovery' );
+        $this->description    = __( 'Reminder emails sent to customers who abandon their cart.', 'c8-cart-recovery' );
         $this->template_html  = 'emails/abandoned-cart.php';
         $this->template_plain = 'emails/plain/abandoned-cart.php';
-        $this->template_base  = WCCR_PLUGIN_PATH . 'templates/';
+        $this->template_base  = C8CR_PLUGIN_PATH . 'templates/';
 
         $this->placeholders = array(
             '{customer_first_name}' => '',
@@ -76,7 +76,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
      * @return string
      */
     public function get_default_subject() {
-        return __( 'You left something behind at {site_title}', 'wc-cart-recovery' );
+        return __( 'You left something behind at {site_title}', 'c8-cart-recovery' );
     }
 
     /**
@@ -85,7 +85,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
      * @return string
      */
     public function get_default_heading() {
-        return __( 'Complete your purchase', 'wc-cart-recovery' );
+        return __( 'Complete your purchase', 'c8-cart-recovery' );
     }
 
     /**
@@ -94,7 +94,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
      * @return string
      */
     public function get_default_additional_content() {
-        return __( 'Need help? Contact us anytime.', 'wc-cart-recovery' );
+        return __( 'Need help? Contact us anytime.', 'c8-cart-recovery' );
     }
 
     /**
@@ -110,8 +110,8 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
 
         $this->is_preview      = true;
         $this->cart_data       = $this->get_dummy_cart_data();
-        $this->recovery_url    = home_url( '/?wccr_recover_cart=preview_token_example' );
-        $this->unsubscribe_url = home_url( '/?wccr_unsubscribe=preview_token_example' );
+        $this->recovery_url    = home_url( '/?c8cr_recover_cart=preview_token_example' );
+        $this->unsubscribe_url = home_url( '/?c8cr_unsubscribe=preview_token_example' );
 
         // Set placeholders for preview
         $this->placeholders['{customer_first_name}'] = 'John';
@@ -145,7 +145,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
                 'variation_id' => 0,
                 'quantity'     => 2,
                 'line_total'   => 49.98,
-                'preview_name' => __( 'Sample Product', 'wc-cart-recovery' ),
+                'preview_name' => __( 'Sample Product', 'c8-cart-recovery' ),
                 'preview_price' => 24.99,
             ),
             array(
@@ -153,7 +153,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
                 'variation_id' => 0,
                 'quantity'     => 1,
                 'line_total'   => 99.99,
-                'preview_name' => __( 'Premium Course Bundle', 'wc-cart-recovery' ),
+                'preview_name' => __( 'Premium Course Bundle', 'c8-cart-recovery' ),
                 'preview_price' => 99.99,
             ),
         ) );
@@ -163,7 +163,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
          *
          * @param object $dummy_cart The dummy cart object.
          */
-        return apply_filters( 'wccr_email_preview_dummy_cart', $dummy_cart );
+        return apply_filters( 'c8cr_email_preview_dummy_cart', $dummy_cart );
     }
 
     /**
@@ -177,11 +177,11 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
         if ( is_object( $cart ) ) {
             $this->cart_data       = $cart;
             $this->recipient       = $cart->user_email;
-            $this->recovery_url    = WCCR_Cart_Recovery::get_recovery_url( $cart->recovery_token );
-            $this->unsubscribe_url = WCCR_Cart_Recovery::get_unsubscribe_url( $cart->recovery_token );
+            $this->recovery_url    = C8CR_Cart_Recovery::get_recovery_url( $cart->recovery_token );
+            $this->unsubscribe_url = C8CR_Cart_Recovery::get_unsubscribe_url( $cart->recovery_token );
 
             // Set placeholders
-            $this->placeholders['{customer_first_name}'] = $cart->user_first_name ? $cart->user_first_name : __( 'there', 'wc-cart-recovery' );
+            $this->placeholders['{customer_first_name}'] = $cart->user_first_name ? $cart->user_first_name : __( 'there', 'c8-cart-recovery' );
             $this->placeholders['{cart_total}']          = wc_price( $cart->cart_total, array( 'currency' => $cart->currency ) );
             $this->placeholders['{recovery_url}']        = $this->recovery_url;
         }
@@ -197,10 +197,10 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
 
             if ( $result ) {
                 // Mark email as sent
-                WCCR_Cron_Handler::mark_email_sent( $cart->id );
+                C8CR_Cron_Handler::mark_email_sent( $cart->id );
 
                 // Action hook for tracking
-                do_action( 'wccr_email_sent', $cart );
+                do_action( 'c8cr_email_sent', $cart );
             }
         }
 
@@ -259,19 +259,19 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
     public function init_form_fields() {
         /* translators: %s: list of available placeholders */
         $placeholder_text = sprintf(
-            __( 'Available placeholders: %s', 'wc-cart-recovery' ),
+            __( 'Available placeholders: %s', 'c8-cart-recovery' ),
             '<code>{site_title}, {customer_first_name}, {cart_total}, {recovery_url}</code>'
         );
 
         $this->form_fields = array(
             'enabled'            => array(
-                'title'   => __( 'Enable/Disable', 'wc-cart-recovery' ),
+                'title'   => __( 'Enable/Disable', 'c8-cart-recovery' ),
                 'type'    => 'checkbox',
-                'label'   => __( 'Enable this email notification', 'wc-cart-recovery' ),
+                'label'   => __( 'Enable this email notification', 'c8-cart-recovery' ),
                 'default' => 'yes',
             ),
             'subject'            => array(
-                'title'       => __( 'Subject', 'wc-cart-recovery' ),
+                'title'       => __( 'Subject', 'c8-cart-recovery' ),
                 'type'        => 'text',
                 'desc_tip'    => true,
                 'description' => $placeholder_text,
@@ -279,7 +279,7 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
                 'default'     => '',
             ),
             'heading'            => array(
-                'title'       => __( 'Email heading', 'wc-cart-recovery' ),
+                'title'       => __( 'Email heading', 'c8-cart-recovery' ),
                 'type'        => 'text',
                 'desc_tip'    => true,
                 'description' => $placeholder_text,
@@ -287,8 +287,8 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
                 'default'     => '',
             ),
             'additional_content' => array(
-                'title'       => __( 'Additional content', 'wc-cart-recovery' ),
-                'description' => __( 'Text to appear below the main email content.', 'wc-cart-recovery' ) . ' ' . $placeholder_text,
+                'title'       => __( 'Additional content', 'c8-cart-recovery' ),
+                'description' => __( 'Text to appear below the main email content.', 'c8-cart-recovery' ) . ' ' . $placeholder_text,
                 'css'         => 'width:400px; height: 75px;',
                 'placeholder' => $this->get_default_additional_content(),
                 'type'        => 'textarea',
@@ -296,9 +296,9 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
                 'desc_tip'    => true,
             ),
             'email_type'         => array(
-                'title'       => __( 'Email type', 'wc-cart-recovery' ),
+                'title'       => __( 'Email type', 'c8-cart-recovery' ),
                 'type'        => 'select',
-                'description' => __( 'Choose which format of email to send.', 'wc-cart-recovery' ),
+                'description' => __( 'Choose which format of email to send.', 'c8-cart-recovery' ),
                 'default'     => 'html',
                 'class'       => 'email_type wc-enhanced-select',
                 'options'     => $this->get_email_type_options(),

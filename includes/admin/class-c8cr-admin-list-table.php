@@ -4,7 +4,7 @@
  *
  * Displays abandoned carts in a WordPress admin table
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,9 +17,9 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * WCCR_Admin_List_Table class
+ * C8CR_Admin_List_Table class
  */
-class WCCR_Admin_List_Table extends WP_List_Table {
+class C8CR_Admin_List_Table extends WP_List_Table {
 
     /**
      * Constructor
@@ -42,14 +42,14 @@ class WCCR_Admin_List_Table extends WP_List_Table {
     public function get_columns() {
         return array(
             'cb'           => '<input type="checkbox" />',
-            'customer'     => __( 'Customer', 'wc-cart-recovery' ),
-            'email'        => __( 'Email', 'wc-cart-recovery' ),
-            'cart_total'   => __( 'Cart Total', 'wc-cart-recovery' ),
-            'products'     => __( 'Products', 'wc-cart-recovery' ),
-            'status'       => __( 'Status', 'wc-cart-recovery' ),
-            'created_at'   => __( 'Abandoned', 'wc-cart-recovery' ),
-            'email_sent'   => __( 'Email Sent', 'wc-cart-recovery' ),
-            'actions'      => __( 'Actions', 'wc-cart-recovery' ),
+            'customer'     => __( 'Customer', 'c8-cart-recovery' ),
+            'email'        => __( 'Email', 'c8-cart-recovery' ),
+            'cart_total'   => __( 'Cart Total', 'c8-cart-recovery' ),
+            'products'     => __( 'Products', 'c8-cart-recovery' ),
+            'status'       => __( 'Status', 'c8-cart-recovery' ),
+            'created_at'   => __( 'Abandoned', 'c8-cart-recovery' ),
+            'email_sent'   => __( 'Email Sent', 'c8-cart-recovery' ),
+            'actions'      => __( 'Actions', 'c8-cart-recovery' ),
         );
     }
 
@@ -73,8 +73,8 @@ class WCCR_Admin_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions() {
         return array(
-            'delete' => __( 'Delete', 'wc-cart-recovery' ),
-            'resend' => __( 'Resend Email', 'wc-cart-recovery' ),
+            'delete' => __( 'Delete', 'c8-cart-recovery' ),
+            'resend' => __( 'Resend Email', 'c8-cart-recovery' ),
         );
     }
 
@@ -149,13 +149,13 @@ class WCCR_Admin_List_Table extends WP_List_Table {
         ?>
         <div class="alignleft actions">
             <select name="status">
-                <option value=""><?php esc_html_e( 'All statuses', 'wc-cart-recovery' ); ?></option>
-                <option value="abandoned" <?php selected( $current_status, 'abandoned' ); ?>><?php esc_html_e( 'Abandoned', 'wc-cart-recovery' ); ?></option>
-                <option value="email_sent" <?php selected( $current_status, 'email_sent' ); ?>><?php esc_html_e( 'Email Sent', 'wc-cart-recovery' ); ?></option>
-                <option value="recovered" <?php selected( $current_status, 'recovered' ); ?>><?php esc_html_e( 'Recovered', 'wc-cart-recovery' ); ?></option>
-                <option value="unsubscribed" <?php selected( $current_status, 'unsubscribed' ); ?>><?php esc_html_e( 'Unsubscribed', 'wc-cart-recovery' ); ?></option>
+                <option value=""><?php esc_html_e( 'All statuses', 'c8-cart-recovery' ); ?></option>
+                <option value="abandoned" <?php selected( $current_status, 'abandoned' ); ?>><?php esc_html_e( 'Abandoned', 'c8-cart-recovery' ); ?></option>
+                <option value="email_sent" <?php selected( $current_status, 'email_sent' ); ?>><?php esc_html_e( 'Email Sent', 'c8-cart-recovery' ); ?></option>
+                <option value="recovered" <?php selected( $current_status, 'recovered' ); ?>><?php esc_html_e( 'Recovered', 'c8-cart-recovery' ); ?></option>
+                <option value="unsubscribed" <?php selected( $current_status, 'unsubscribed' ); ?>><?php esc_html_e( 'Unsubscribed', 'c8-cart-recovery' ); ?></option>
             </select>
-            <?php submit_button( __( 'Filter', 'wc-cart-recovery' ), '', 'filter_action', false ); ?>
+            <?php submit_button( __( 'Filter', 'c8-cart-recovery' ), '', 'filter_action', false ); ?>
         </div>
         <?php
     }
@@ -180,7 +180,7 @@ class WCCR_Admin_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_customer( $item ) {
-        $name = $item->user_first_name ? $item->user_first_name : __( 'Guest', 'wc-cart-recovery' );
+        $name = $item->user_first_name ? $item->user_first_name : __( 'Guest', 'c8-cart-recovery' );
 
         if ( $item->user_id ) {
             $user = get_userdata( $item->user_id );
@@ -200,7 +200,7 @@ class WCCR_Admin_List_Table extends WP_List_Table {
      */
     public function column_email( $item ) {
         if ( empty( $item->user_email ) ) {
-            return '<em>' . esc_html__( 'Not captured', 'wc-cart-recovery' ) . '</em>';
+            return '<em>' . esc_html__( 'Not captured', 'c8-cart-recovery' ) . '</em>';
         }
 
         return sprintf(
@@ -264,10 +264,10 @@ class WCCR_Admin_List_Table extends WP_List_Table {
      */
     public function column_status( $item ) {
         $statuses = array(
-            'abandoned'    => '<span class="wccr-status wccr-status-abandoned">' . esc_html__( 'Abandoned', 'wc-cart-recovery' ) . '</span>',
-            'email_sent'   => '<span class="wccr-status wccr-status-email-sent">' . esc_html__( 'Email Sent', 'wc-cart-recovery' ) . '</span>',
-            'recovered'    => '<span class="wccr-status wccr-status-recovered">' . esc_html__( 'Recovered', 'wc-cart-recovery' ) . '</span>',
-            'unsubscribed' => '<span class="wccr-status wccr-status-unsubscribed">' . esc_html__( 'Unsubscribed', 'wc-cart-recovery' ) . '</span>',
+            'abandoned'    => '<span class="wccr-status wccr-status-abandoned">' . esc_html__( 'Abandoned', 'c8-cart-recovery' ) . '</span>',
+            'email_sent'   => '<span class="wccr-status wccr-status-email-sent">' . esc_html__( 'Email Sent', 'c8-cart-recovery' ) . '</span>',
+            'recovered'    => '<span class="wccr-status wccr-status-recovered">' . esc_html__( 'Recovered', 'c8-cart-recovery' ) . '</span>',
+            'unsubscribed' => '<span class="wccr-status wccr-status-unsubscribed">' . esc_html__( 'Unsubscribed', 'c8-cart-recovery' ) . '</span>',
         );
 
         return isset( $statuses[ $item->status ] ) ? $statuses[ $item->status ] : esc_html( $item->status );
@@ -286,7 +286,7 @@ class WCCR_Admin_List_Table extends WP_List_Table {
             '<abbr title="%s">%s %s</abbr>',
             esc_attr( $item->created_at ),
             esc_html( $time_diff ),
-            esc_html__( 'ago', 'wc-cart-recovery' )
+            esc_html__( 'ago', 'c8-cart-recovery' )
         );
     }
 
@@ -298,16 +298,16 @@ class WCCR_Admin_List_Table extends WP_List_Table {
      */
     public function column_email_sent( $item ) {
         if ( $item->email_sent_count < 1 ) {
-            return '<em>' . esc_html__( 'Not sent', 'wc-cart-recovery' ) . '</em>';
+            return '<em>' . esc_html__( 'Not sent', 'c8-cart-recovery' ) . '</em>';
         }
 
         $output = sprintf(
-            esc_html__( 'Sent %d time(s)', 'wc-cart-recovery' ),
+            esc_html__( 'Sent %d time(s)', 'c8-cart-recovery' ),
             $item->email_sent_count
         );
 
         if ( $item->last_email_sent ) {
-            $output .= '<br /><small>' . esc_html( human_time_diff( strtotime( $item->last_email_sent ), current_time( 'timestamp' ) ) ) . ' ' . esc_html__( 'ago', 'wc-cart-recovery' ) . '</small>';
+            $output .= '<br /><small>' . esc_html( human_time_diff( strtotime( $item->last_email_sent ), current_time( 'timestamp' ) ) ) . ' ' . esc_html__( 'ago', 'c8-cart-recovery' ) . '</small>';
         }
 
         return $output;
@@ -332,13 +332,13 @@ class WCCR_Admin_List_Table extends WP_List_Table {
                     ),
                     admin_url( 'admin.php?page=wccr-abandoned-carts' )
                 ),
-                'wccr_action_' . $item->id
+                'c8cr_action_' . $item->id
             );
 
             $actions[] = sprintf(
                 '<a href="%s">%s</a>',
                 esc_url( $resend_url ),
-                esc_html__( 'Resend Email', 'wc-cart-recovery' )
+                esc_html__( 'Resend Email', 'c8-cart-recovery' )
             );
         }
 
@@ -351,14 +351,14 @@ class WCCR_Admin_List_Table extends WP_List_Table {
                 ),
                 admin_url( 'admin.php?page=wccr-abandoned-carts' )
             ),
-            'wccr_action_' . $item->id
+            'c8cr_action_' . $item->id
         );
 
         $actions[] = sprintf(
             '<a href="%s" class="wccr-delete" onclick="return confirm(\'%s\');">%s</a>',
             esc_url( $delete_url ),
-            esc_js( __( 'Are you sure you want to delete this abandoned cart?', 'wc-cart-recovery' ) ),
-            esc_html__( 'Delete', 'wc-cart-recovery' )
+            esc_js( __( 'Are you sure you want to delete this abandoned cart?', 'c8-cart-recovery' ) ),
+            esc_html__( 'Delete', 'c8-cart-recovery' )
         );
 
         return implode( ' | ', $actions );
@@ -368,6 +368,6 @@ class WCCR_Admin_List_Table extends WP_List_Table {
      * No items message
      */
     public function no_items() {
-        esc_html_e( 'No abandoned carts found.', 'wc-cart-recovery' );
+        esc_html_e( 'No abandoned carts found.', 'c8-cart-recovery' );
     }
 }

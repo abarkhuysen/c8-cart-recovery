@@ -4,7 +4,7 @@
  *
  * Handles scheduled tasks for processing abandoned carts and sending emails
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WCCR_Cron_Handler class
+ * C8CR_Cron_Handler class
  */
-class WCCR_Cron_Handler {
+class C8CR_Cron_Handler {
 
     /**
      * Constructor
@@ -31,10 +31,10 @@ class WCCR_Cron_Handler {
         add_filter( 'cron_schedules', array( $this, 'add_cron_interval' ) );
 
         // Process abandoned carts
-        add_action( 'wccr_process_abandoned_carts', array( $this, 'process_abandoned_carts' ) );
+        add_action( 'c8cr_process_abandoned_carts', array( $this, 'process_abandoned_carts' ) );
 
         // Cleanup old carts
-        add_action( 'wccr_cleanup_old_carts', array( $this, 'cleanup_old_carts' ) );
+        add_action( 'c8cr_cleanup_old_carts', array( $this, 'cleanup_old_carts' ) );
     }
 
     /**
@@ -47,7 +47,7 @@ class WCCR_Cron_Handler {
         if ( ! isset( $schedules['fifteen_minutes'] ) ) {
             $schedules['fifteen_minutes'] = array(
                 'interval' => 900, // 15 minutes
-                'display'  => __( 'Every 15 Minutes', 'wc-cart-recovery' ),
+                'display'  => __( 'Every 15 Minutes', 'c8-cart-recovery' ),
             );
         }
         return $schedules;
@@ -58,11 +58,11 @@ class WCCR_Cron_Handler {
      */
     public function process_abandoned_carts() {
         // Check if plugin and email are enabled
-        if ( get_option( 'wccr_enabled', 'yes' ) !== 'yes' ) {
+        if ( get_option( 'c8cr_enabled', 'yes' ) !== 'yes' ) {
             return;
         }
 
-        if ( get_option( 'wccr_email_enabled', 'yes' ) !== 'yes' ) {
+        if ( get_option( 'c8cr_email_enabled', 'yes' ) !== 'yes' ) {
             return;
         }
 
@@ -70,7 +70,7 @@ class WCCR_Cron_Handler {
         $table_name = $wpdb->prefix . 'wc_abandoned_carts';
 
         // Get abandonment threshold (in minutes)
-        $abandonment_time = absint( get_option( 'wccr_abandonment_time', 60 ) );
+        $abandonment_time = absint( get_option( 'c8cr_abandonment_time', 60 ) );
         $threshold_time   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$abandonment_time} minutes" ) );
 
         // Find carts that:
@@ -101,11 +101,11 @@ class WCCR_Cron_Handler {
         $mailer = WC()->mailer();
         $emails = $mailer->get_emails();
 
-        if ( ! isset( $emails['WCCR_Email_Abandoned_Cart'] ) ) {
+        if ( ! isset( $emails['C8CR_Email_Abandoned_Cart'] ) ) {
             return;
         }
 
-        $email = $emails['WCCR_Email_Abandoned_Cart'];
+        $email = $emails['C8CR_Email_Abandoned_Cart'];
 
         foreach ( $abandoned_carts as $cart ) {
             // Double-check email is valid
@@ -135,7 +135,7 @@ class WCCR_Cron_Handler {
         $table_name = $wpdb->prefix . 'wc_abandoned_carts';
 
         // Get cleanup threshold (in days)
-        $cleanup_days   = absint( get_option( 'wccr_cleanup_days', 30 ) );
+        $cleanup_days   = absint( get_option( 'c8cr_cleanup_days', 30 ) );
         $threshold_time = gmdate( 'Y-m-d H:i:s', strtotime( "-{$cleanup_days} days" ) );
 
         // Delete old abandoned and recovered carts
@@ -149,7 +149,7 @@ class WCCR_Cron_Handler {
         );
 
         // Log cleanup action
-        do_action( 'wccr_carts_cleaned_up', $cleanup_days );
+        do_action( 'c8cr_carts_cleaned_up', $cleanup_days );
     }
 
     /**

@@ -4,7 +4,7 @@
  *
  * Handles admin pages and settings
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * WCCR_Admin class
+ * C8CR_Admin class
  */
-class WCCR_Admin {
+class C8CR_Admin {
 
     /**
      * Constructor
@@ -46,8 +46,8 @@ class WCCR_Admin {
     public function add_admin_menu() {
         add_submenu_page(
             'woocommerce',
-            __( 'Abandoned Carts', 'wc-cart-recovery' ),
-            __( 'Abandoned Carts', 'wc-cart-recovery' ),
+            __( 'Abandoned Carts', 'c8-cart-recovery' ),
+            __( 'Abandoned Carts', 'c8-cart-recovery' ),
             'manage_woocommerce',
             'wccr-abandoned-carts',
             array( $this, 'render_admin_page' )
@@ -66,9 +66,9 @@ class WCCR_Admin {
 
         wp_enqueue_style(
             'wccr-admin',
-            WCCR_PLUGIN_URL . 'assets/css/admin.css',
+            C8CR_PLUGIN_URL . 'assets/css/admin.css',
             array(),
-            WCCR_VERSION
+            C8CR_VERSION
         );
     }
 
@@ -82,7 +82,7 @@ class WCCR_Admin {
             $cart_id = absint( wp_unslash( $_GET['cart_id'] ) );
             $nonce   = sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) );
 
-            if ( ! wp_verify_nonce( $nonce, 'wccr_action_' . $cart_id ) ) {
+            if ( ! wp_verify_nonce( $nonce, 'c8cr_action_' . $cart_id ) ) {
                 return;
             }
 
@@ -151,7 +151,7 @@ class WCCR_Admin {
      * @param int $cart_id Cart ID.
      */
     private function resend_email( $cart_id ) {
-        $cart = WCCR_Plugin::get_cart( $cart_id );
+        $cart = C8CR_Plugin::get_cart( $cart_id );
 
         if ( ! $cart || ! is_email( $cart->user_email ) ) {
             return;
@@ -161,8 +161,8 @@ class WCCR_Admin {
         $mailer = WC()->mailer();
         $emails = $mailer->get_emails();
 
-        if ( isset( $emails['WCCR_Email_Abandoned_Cart'] ) ) {
-            $emails['WCCR_Email_Abandoned_Cart']->trigger( $cart );
+        if ( isset( $emails['C8CR_Email_Abandoned_Cart'] ) ) {
+            $emails['C8CR_Email_Abandoned_Cart']->trigger( $cart );
         }
     }
 
@@ -170,10 +170,10 @@ class WCCR_Admin {
      * Register plugin settings
      */
     public function register_settings() {
-        register_setting( 'wccr_settings', 'wccr_enabled' );
-        register_setting( 'wccr_settings', 'wccr_abandonment_time' );
-        register_setting( 'wccr_settings', 'wccr_email_enabled' );
-        register_setting( 'wccr_settings', 'wccr_cleanup_days' );
+        register_setting( 'c8cr_settings', 'c8cr_enabled' );
+        register_setting( 'c8cr_settings', 'c8cr_abandonment_time' );
+        register_setting( 'c8cr_settings', 'c8cr_email_enabled' );
+        register_setting( 'c8cr_settings', 'c8cr_cleanup_days' );
     }
 
     /**
@@ -185,20 +185,20 @@ class WCCR_Admin {
 
         ?>
         <div class="wrap wccr-admin-wrap">
-            <h1><?php esc_html_e( 'Abandoned Carts', 'wc-cart-recovery' ); ?></h1>
+            <h1><?php esc_html_e( 'Abandoned Carts', 'c8-cart-recovery' ); ?></h1>
 
             <nav class="nav-tab-wrapper woo-nav-tab-wrapper">
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=wccr-abandoned-carts&tab=carts' ) ); ?>"
                    class="nav-tab <?php echo 'carts' === $current_tab ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e( 'Abandoned Carts', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Abandoned Carts', 'c8-cart-recovery' ); ?>
                 </a>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=wccr-abandoned-carts&tab=stats' ) ); ?>"
                    class="nav-tab <?php echo 'stats' === $current_tab ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e( 'Statistics', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Statistics', 'c8-cart-recovery' ); ?>
                 </a>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=wccr-abandoned-carts&tab=settings' ) ); ?>"
                    class="nav-tab <?php echo 'settings' === $current_tab ? 'nav-tab-active' : ''; ?>">
-                    <?php esc_html_e( 'Settings', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Settings', 'c8-cart-recovery' ); ?>
                 </a>
             </nav>
 
@@ -225,7 +225,7 @@ class WCCR_Admin {
      * Render the carts tab
      */
     private function render_carts_tab() {
-        $list_table = new WCCR_Admin_List_Table();
+        $list_table = new C8CR_Admin_List_Table();
         $list_table->prepare_items();
 
         ?>
@@ -241,63 +241,63 @@ class WCCR_Admin {
      * Render the statistics tab
      */
     private function render_stats_tab() {
-        $stats = WCCR_Cron_Handler::get_statistics();
+        $stats = C8CR_Cron_Handler::get_statistics();
 
         ?>
         <div class="wccr-stats-grid">
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Total Abandoned', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Total Abandoned', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number"><?php echo esc_html( $stats['total_abandoned'] ); ?></span>
             </div>
 
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Total Recovered', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Total Recovered', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number wccr-stat-success"><?php echo esc_html( $stats['total_recovered'] ); ?></span>
             </div>
 
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Recovery Rate', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Recovery Rate', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number"><?php echo esc_html( $stats['recovery_rate'] ); ?>%</span>
             </div>
 
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Emails Sent', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Emails Sent', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number"><?php echo esc_html( $stats['total_email_sent'] ); ?></span>
             </div>
 
             <div class="wccr-stat-box wccr-stat-box-wide">
-                <h3><?php esc_html_e( 'Abandoned Cart Value', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Abandoned Cart Value', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number wccr-stat-warning"><?php echo wp_kses_post( wc_price( $stats['abandoned_value'] ) ); ?></span>
             </div>
 
             <div class="wccr-stat-box wccr-stat-box-wide">
-                <h3><?php esc_html_e( 'Recovered Value', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Recovered Value', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number wccr-stat-success"><?php echo wp_kses_post( wc_price( $stats['recovered_value'] ) ); ?></span>
             </div>
         </div>
 
-        <h2><?php esc_html_e( 'Today', 'wc-cart-recovery' ); ?></h2>
+        <h2><?php esc_html_e( 'Today', 'c8-cart-recovery' ); ?></h2>
         <div class="wccr-stats-grid">
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Abandoned Today', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Abandoned Today', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number"><?php echo esc_html( $stats['today_abandoned'] ); ?></span>
             </div>
 
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Recovered Today', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Recovered Today', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number wccr-stat-success"><?php echo esc_html( $stats['today_recovered'] ); ?></span>
             </div>
         </div>
 
-        <h2><?php esc_html_e( 'This Week', 'wc-cart-recovery' ); ?></h2>
+        <h2><?php esc_html_e( 'This Week', 'c8-cart-recovery' ); ?></h2>
         <div class="wccr-stats-grid">
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Abandoned This Week', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Abandoned This Week', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number"><?php echo esc_html( $stats['week_abandoned'] ); ?></span>
             </div>
 
             <div class="wccr-stat-box">
-                <h3><?php esc_html_e( 'Recovered This Week', 'wc-cart-recovery' ); ?></h3>
+                <h3><?php esc_html_e( 'Recovered This Week', 'c8-cart-recovery' ); ?></h3>
                 <span class="wccr-stat-number wccr-stat-success"><?php echo esc_html( $stats['week_recovered'] ); ?></span>
             </div>
         </div>
@@ -310,73 +310,73 @@ class WCCR_Admin {
     private function render_settings_tab() {
         ?>
         <form method="post" action="options.php">
-            <?php settings_fields( 'wccr_settings' ); ?>
+            <?php settings_fields( 'c8cr_settings' ); ?>
 
             <table class="form-table">
                 <tr>
                     <th scope="row">
-                        <label for="wccr_enabled"><?php esc_html_e( 'Enable Cart Recovery', 'wc-cart-recovery' ); ?></label>
+                        <label for="c8cr_enabled"><?php esc_html_e( 'Enable Cart Recovery', 'c8-cart-recovery' ); ?></label>
                     </th>
                     <td>
-                        <select name="wccr_enabled" id="wccr_enabled">
-                            <option value="yes" <?php selected( get_option( 'wccr_enabled', 'yes' ), 'yes' ); ?>>
-                                <?php esc_html_e( 'Yes', 'wc-cart-recovery' ); ?>
+                        <select name="c8cr_enabled" id="c8cr_enabled">
+                            <option value="yes" <?php selected( get_option( 'c8cr_enabled', 'yes' ), 'yes' ); ?>>
+                                <?php esc_html_e( 'Yes', 'c8-cart-recovery' ); ?>
                             </option>
-                            <option value="no" <?php selected( get_option( 'wccr_enabled', 'yes' ), 'no' ); ?>>
-                                <?php esc_html_e( 'No', 'wc-cart-recovery' ); ?>
+                            <option value="no" <?php selected( get_option( 'c8cr_enabled', 'yes' ), 'no' ); ?>>
+                                <?php esc_html_e( 'No', 'c8-cart-recovery' ); ?>
                             </option>
                         </select>
                         <p class="description">
-                            <?php esc_html_e( 'Enable or disable cart tracking and recovery emails.', 'wc-cart-recovery' ); ?>
+                            <?php esc_html_e( 'Enable or disable cart tracking and recovery emails.', 'c8-cart-recovery' ); ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr>
                     <th scope="row">
-                        <label for="wccr_abandonment_time"><?php esc_html_e( 'Abandonment Time', 'wc-cart-recovery' ); ?></label>
+                        <label for="c8cr_abandonment_time"><?php esc_html_e( 'Abandonment Time', 'c8-cart-recovery' ); ?></label>
                     </th>
                     <td>
-                        <input type="number" name="wccr_abandonment_time" id="wccr_abandonment_time"
-                               value="<?php echo esc_attr( get_option( 'wccr_abandonment_time', 60 ) ); ?>"
+                        <input type="number" name="c8cr_abandonment_time" id="c8cr_abandonment_time"
+                               value="<?php echo esc_attr( get_option( 'c8cr_abandonment_time', 60 ) ); ?>"
                                min="15" max="1440" step="15" class="small-text" />
-                        <?php esc_html_e( 'minutes', 'wc-cart-recovery' ); ?>
+                        <?php esc_html_e( 'minutes', 'c8-cart-recovery' ); ?>
                         <p class="description">
-                            <?php esc_html_e( 'Time after which a cart is considered abandoned. Minimum 15 minutes.', 'wc-cart-recovery' ); ?>
+                            <?php esc_html_e( 'Time after which a cart is considered abandoned. Minimum 15 minutes.', 'c8-cart-recovery' ); ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr>
                     <th scope="row">
-                        <label for="wccr_email_enabled"><?php esc_html_e( 'Send Recovery Emails', 'wc-cart-recovery' ); ?></label>
+                        <label for="c8cr_email_enabled"><?php esc_html_e( 'Send Recovery Emails', 'c8-cart-recovery' ); ?></label>
                     </th>
                     <td>
-                        <select name="wccr_email_enabled" id="wccr_email_enabled">
-                            <option value="yes" <?php selected( get_option( 'wccr_email_enabled', 'yes' ), 'yes' ); ?>>
-                                <?php esc_html_e( 'Yes', 'wc-cart-recovery' ); ?>
+                        <select name="c8cr_email_enabled" id="c8cr_email_enabled">
+                            <option value="yes" <?php selected( get_option( 'c8cr_email_enabled', 'yes' ), 'yes' ); ?>>
+                                <?php esc_html_e( 'Yes', 'c8-cart-recovery' ); ?>
                             </option>
-                            <option value="no" <?php selected( get_option( 'wccr_email_enabled', 'yes' ), 'no' ); ?>>
-                                <?php esc_html_e( 'No', 'wc-cart-recovery' ); ?>
+                            <option value="no" <?php selected( get_option( 'c8cr_email_enabled', 'yes' ), 'no' ); ?>>
+                                <?php esc_html_e( 'No', 'c8-cart-recovery' ); ?>
                             </option>
                         </select>
                         <p class="description">
-                            <?php esc_html_e( 'Automatically send recovery emails to customers with abandoned carts.', 'wc-cart-recovery' ); ?>
+                            <?php esc_html_e( 'Automatically send recovery emails to customers with abandoned carts.', 'c8-cart-recovery' ); ?>
                         </p>
                     </td>
                 </tr>
 
                 <tr>
                     <th scope="row">
-                        <label for="wccr_cleanup_days"><?php esc_html_e( 'Data Retention', 'wc-cart-recovery' ); ?></label>
+                        <label for="c8cr_cleanup_days"><?php esc_html_e( 'Data Retention', 'c8-cart-recovery' ); ?></label>
                     </th>
                     <td>
-                        <input type="number" name="wccr_cleanup_days" id="wccr_cleanup_days"
-                               value="<?php echo esc_attr( get_option( 'wccr_cleanup_days', 30 ) ); ?>"
+                        <input type="number" name="c8cr_cleanup_days" id="c8cr_cleanup_days"
+                               value="<?php echo esc_attr( get_option( 'c8cr_cleanup_days', 30 ) ); ?>"
                                min="7" max="365" step="1" class="small-text" />
-                        <?php esc_html_e( 'days', 'wc-cart-recovery' ); ?>
+                        <?php esc_html_e( 'days', 'c8-cart-recovery' ); ?>
                         <p class="description">
-                            <?php esc_html_e( 'Number of days to keep abandoned cart data before automatic cleanup.', 'wc-cart-recovery' ); ?>
+                            <?php esc_html_e( 'Number of days to keep abandoned cart data before automatic cleanup.', 'c8-cart-recovery' ); ?>
                         </p>
                     </td>
                 </tr>
@@ -387,14 +387,14 @@ class WCCR_Admin {
 
         <hr />
 
-        <h2><?php esc_html_e( 'Email Settings', 'wc-cart-recovery' ); ?></h2>
+        <h2><?php esc_html_e( 'Email Settings', 'c8-cart-recovery' ); ?></h2>
         <p>
             <?php
             printf(
                 /* translators: %s: Link to WooCommerce email settings */
-                esc_html__( 'Configure the abandoned cart email template in %s.', 'wc-cart-recovery' ),
-                '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=email&section=wccr_email_abandoned_cart' ) ) . '">' .
-                esc_html__( 'WooCommerce Email Settings', 'wc-cart-recovery' ) . '</a>'
+                esc_html__( 'Configure the abandoned cart email template in %s.', 'c8-cart-recovery' ),
+                '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=email&section=c8cr_email_abandoned_cart' ) ) . '">' .
+                esc_html__( 'WooCommerce Email Settings', 'c8-cart-recovery' ) . '</a>'
             );
             ?>
         </p>

@@ -2,7 +2,7 @@
 /**
  * Abandoned Cart Email Template (HTML)
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  * @version 1.0.0
  */
 
@@ -20,14 +20,14 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
     <?php
     printf(
         /* translators: %s: Customer first name */
-        esc_html__( 'Hi %s,', 'wc-cart-recovery' ),
-        esc_html( $cart_data->user_first_name ? $cart_data->user_first_name : __( 'there', 'wc-cart-recovery' ) )
+        esc_html__( 'Hi %s,', 'c8-cart-recovery' ),
+        esc_html( $cart_data->user_first_name ? $cart_data->user_first_name : __( 'there', 'c8-cart-recovery' ) )
     );
     ?>
 </p>
 
 <p>
-    <?php esc_html_e( 'We noticed you left some items in your cart. Don\'t worry, we\'ve saved them for you!', 'wc-cart-recovery' ); ?>
+    <?php esc_html_e( 'We noticed you left some items in your cart. Don\'t worry, we\'ve saved them for you!', 'c8-cart-recovery' ); ?>
 </p>
 
 <?php
@@ -35,19 +35,19 @@ $cart_items = $email->get_cart_items();
 
 if ( ! empty( $cart_items ) ) :
     ?>
-    <h2><?php esc_html_e( 'Your Cart', 'wc-cart-recovery' ); ?></h2>
+    <h2><?php esc_html_e( 'Your Cart', 'c8-cart-recovery' ); ?></h2>
 
     <table class="td" cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #e5e5e5; margin-bottom: 20px;" border="1">
         <thead>
             <tr>
                 <th class="td" scope="col" style="text-align: left; border: 1px solid #e5e5e5; padding: 12px;">
-                    <?php esc_html_e( 'Product', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Product', 'c8-cart-recovery' ); ?>
                 </th>
                 <th class="td" scope="col" style="text-align: center; border: 1px solid #e5e5e5; padding: 12px;">
-                    <?php esc_html_e( 'Quantity', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Quantity', 'c8-cart-recovery' ); ?>
                 </th>
                 <th class="td" scope="col" style="text-align: right; border: 1px solid #e5e5e5; padding: 12px;">
-                    <?php esc_html_e( 'Price', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Price', 'c8-cart-recovery' ); ?>
                 </th>
             </tr>
         </thead>
@@ -78,7 +78,7 @@ if ( ! empty( $cart_items ) ) :
         <tfoot>
             <tr>
                 <th class="td" scope="row" colspan="2" style="text-align: right; border: 1px solid #e5e5e5; padding: 12px;">
-                    <?php esc_html_e( 'Total:', 'wc-cart-recovery' ); ?>
+                    <?php esc_html_e( 'Total:', 'c8-cart-recovery' ); ?>
                 </th>
                 <td class="td" style="text-align: right; border: 1px solid #e5e5e5; padding: 12px; font-weight: bold;">
                     <?php echo wp_kses_post( wc_price( $cart_data->cart_total, array( 'currency' => $cart_data->currency ) ) ); ?>
@@ -87,17 +87,17 @@ if ( ! empty( $cart_items ) ) :
         </tfoot>
     </table>
 <?php else : ?>
-    <p><em><?php esc_html_e( 'Your cart items are no longer available. Click the button below to browse our products.', 'wc-cart-recovery' ); ?></em></p>
+    <p><em><?php esc_html_e( 'Your cart items are no longer available. Click the button below to browse our products.', 'c8-cart-recovery' ); ?></em></p>
 <?php endif; ?>
 
 <p style="margin: 30px 0; text-align: center;">
     <a href="<?php echo esc_url( $recovery_url ); ?>" style="background-color: #841d95; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">
-        <?php esc_html_e( 'Complete Your Purchase', 'wc-cart-recovery' ); ?>
+        <?php esc_html_e( 'Complete Your Purchase', 'c8-cart-recovery' ); ?>
     </a>
 </p>
 
 <p>
-    <?php esc_html_e( 'This link will restore your cart and take you directly to checkout.', 'wc-cart-recovery' ); ?>
+    <?php esc_html_e( 'This link will restore your cart and take you directly to checkout.', 'c8-cart-recovery' ); ?>
 </p>
 
 <?php if ( $additional_content ) : ?>

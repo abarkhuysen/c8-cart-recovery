@@ -2,7 +2,7 @@
 /**
  * Abandoned Cart Email Template (Plain Text)
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  * @version 1.0.0
  */
 
@@ -16,13 +16,13 @@ echo "\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n";
 
 printf(
     /* translators: %s: Customer first name */
-    esc_html__( 'Hi %s,', 'wc-cart-recovery' ),
-    esc_html( $cart_data->user_first_name ? $cart_data->user_first_name : __( 'there', 'wc-cart-recovery' ) )
+    esc_html__( 'Hi %s,', 'c8-cart-recovery' ),
+    esc_html( $cart_data->user_first_name ? $cart_data->user_first_name : __( 'there', 'c8-cart-recovery' ) )
 );
 
 echo "\n\n";
 
-echo esc_html__( 'We noticed you left some items in your cart. Don\'t worry, we\'ve saved them for you!', 'wc-cart-recovery' );
+echo esc_html__( 'We noticed you left some items in your cart. Don\'t worry, we\'ve saved them for you!', 'c8-cart-recovery' );
 
 echo "\n\n";
 
@@ -30,7 +30,7 @@ $cart_items = $email->get_cart_items();
 
 if ( ! empty( $cart_items ) ) {
     echo "----------------------------------------\n";
-    echo esc_html__( 'Your Cart', 'wc-cart-recovery' ) . "\n";
+    echo esc_html__( 'Your Cart', 'c8-cart-recovery' ) . "\n";
     echo "----------------------------------------\n\n";
 
     foreach ( $cart_items as $item ) {
@@ -48,18 +48,18 @@ if ( ! empty( $cart_items ) ) {
     echo "\n";
     printf(
         /* translators: %s: Cart total */
-        esc_html__( 'Total: %s', 'wc-cart-recovery' ),
+        esc_html__( 'Total: %s', 'c8-cart-recovery' ),
         wp_strip_all_tags( wc_price( $cart_data->cart_total, array( 'currency' => $cart_data->currency ) ) )
     );
     echo "\n\n";
 }
 
 echo "----------------------------------------\n";
-echo esc_html__( 'Complete Your Purchase:', 'wc-cart-recovery' ) . "\n";
+echo esc_html__( 'Complete Your Purchase:', 'c8-cart-recovery' ) . "\n";
 echo esc_url( $recovery_url );
 echo "\n----------------------------------------\n\n";
 
-echo esc_html__( 'This link will restore your cart and take you directly to checkout.', 'wc-cart-recovery' );
+echo esc_html__( 'This link will restore your cart and take you directly to checkout.', 'c8-cart-recovery' );
 
 echo "\n\n";
 
@@ -71,7 +71,7 @@ if ( $additional_content ) {
 echo "----------------------------------------\n";
 printf(
     /* translators: %s: Unsubscribe URL */
-    esc_html__( 'Don\'t want to receive these emails? Unsubscribe: %s', 'wc-cart-recovery' ),
+    esc_html__( 'Don\'t want to receive these emails? Unsubscribe: %s', 'c8-cart-recovery' ),
     esc_url( $unsubscribe_url )
 );
 echo "\n";

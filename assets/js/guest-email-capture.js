@@ -3,13 +3,13 @@
  *
  * Captures guest email address via AJAX when entered on checkout page
  *
- * @package WC_Cart_Recovery
+ * @package C8_Cart_Recovery
  */
 
 (function($) {
     'use strict';
 
-    var WCCR_Guest_Email_Capture = {
+    var C8CR_Guest_Email_Capture = {
         /**
          * Debounce timer
          */
@@ -92,18 +92,18 @@
                 return;
             }
 
-            // Check if wccr_params is available
-            if (typeof wccr_params === 'undefined') {
+            // Check if c8cr_params is available
+            if (typeof c8cr_params === 'undefined') {
                 return;
             }
 
             // Send AJAX request
             $.ajax({
-                url: wccr_params.ajax_url,
+                url: c8cr_params.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'wccr_capture_email',
-                    nonce: wccr_params.nonce,
+                    action: 'c8cr_capture_email',
+                    nonce: c8cr_params.nonce,
                     email: email,
                     first_name: firstName,
                     phone: phone
@@ -122,7 +122,7 @@
 
     // Initialize on document ready
     $(document).ready(function() {
-        WCCR_Guest_Email_Capture.init();
+        C8CR_Guest_Email_Capture.init();
     });
 
 })(jQuery);
