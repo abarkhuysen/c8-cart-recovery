@@ -128,7 +128,7 @@ class C8CR_Cart_Tracker {
         }
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         // Serialize cart contents
         $cart_contents = array();
@@ -223,7 +223,7 @@ class C8CR_Cart_Tracker {
         }
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         $existing_cart = C8CR_Plugin::get_cart_by_session( $session_id );
 
@@ -291,7 +291,7 @@ class C8CR_Cart_Tracker {
      */
     private function mark_recovered_by_session( $session_id, $order_id ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         $wpdb->update(
             $table_name,
@@ -315,7 +315,7 @@ class C8CR_Cart_Tracker {
         }
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         // Delete the cart record when cart is manually emptied
         $wpdb->delete(

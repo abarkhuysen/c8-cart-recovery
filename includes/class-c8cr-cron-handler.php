@@ -67,7 +67,7 @@ class C8CR_Cron_Handler {
         }
 
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         // Get abandonment threshold (in minutes)
         $abandonment_time = absint( get_option( 'c8cr_abandonment_time', 60 ) );
@@ -132,7 +132,7 @@ class C8CR_Cron_Handler {
      */
     public function cleanup_old_carts() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         // Get cleanup threshold (in days)
         $cleanup_days   = absint( get_option( 'c8cr_cleanup_days', 30 ) );
@@ -159,7 +159,7 @@ class C8CR_Cron_Handler {
      */
     public static function get_statistics() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $stats = array(
@@ -229,7 +229,7 @@ class C8CR_Cron_Handler {
      */
     public static function mark_email_sent( $cart_id ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         $wpdb->query(
             $wpdb->prepare(

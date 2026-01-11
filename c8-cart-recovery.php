@@ -3,7 +3,7 @@
  * Plugin Name: C8 Cart Recovery
  * Plugin URI: https://github.com/abarkhuysen/c8-cart-recovery
  * Description: Recover abandoned carts by sending reminder emails to customers who don't complete checkout.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Arthur Barkhuysen
  * Author URI: https://github.com/arthurbarkhuysen
  * License: GPL v2 or later
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'C8CR_VERSION', '1.0.0' );
+define( 'C8CR_VERSION', '1.1.0' );
 define( 'C8CR_PLUGIN_FILE', __FILE__ );
 define( 'C8CR_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'C8CR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -45,6 +45,42 @@ function c8cr_plugin_action_links( $links ) {
     return $links;
 }
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'c8cr_plugin_action_links' );
+
+/**
+ * Run database migrations if needed
+ */
+function c8cr_maybe_run_migrations() {
+    $current_version = get_option( 'c8cr_db_version', '1.0.0' );
+
+    // Migration from 1.0.0 to 1.1.0: Rename table from wc_abandoned_carts to c8cr_abandoned_carts
+    if ( version_compare( $current_version, '1.1.0', '<' ) ) {
+        c8cr_migrate_1_1_0();
+        update_option( 'c8cr_db_version', '1.1.0' );
+    }
+}
+add_action( 'plugins_loaded', 'c8cr_maybe_run_migrations', 5 );
+
+/**
+ * Migration 1.1.0: Rename database table from wc_abandoned_carts to c8cr_abandoned_carts
+ */
+function c8cr_migrate_1_1_0() {
+    global $wpdb;
+
+    $old_table = $wpdb->prefix . 'wc_abandoned_carts';
+    $new_table = $wpdb->prefix . 'c8cr_abandoned_carts';
+
+    // Check if old table exists
+    $old_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $old_table ) ) === $old_table;
+
+    // Check if new table already exists
+    $new_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $new_table ) ) === $new_table;
+
+    if ( $old_exists && ! $new_exists ) {
+        // Rename the table
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $wpdb->query( "RENAME TABLE `{$old_table}` TO `{$new_table}`" );
+    }
+}
 
 /**
  * Check if WooCommerce is active

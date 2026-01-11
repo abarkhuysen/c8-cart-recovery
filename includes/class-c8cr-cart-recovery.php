@@ -165,7 +165,7 @@ class C8CR_Cart_Recovery {
      */
     private function mark_as_recovered( $cart_id ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         $wpdb->update(
             $table_name,
@@ -209,7 +209,7 @@ class C8CR_Cart_Recovery {
 
         // Mark as unsubscribed
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         $wpdb->update(
             $table_name,

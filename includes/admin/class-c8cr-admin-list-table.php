@@ -83,7 +83,7 @@ class C8CR_Admin_List_Table extends WP_List_Table {
      */
     public function prepare_items() {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         // Columns
         $columns  = $this->get_columns();

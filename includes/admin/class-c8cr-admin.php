@@ -136,7 +136,7 @@ class C8CR_Admin {
      */
     private function delete_cart( $cart_id ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         $wpdb->delete(
             $table_name,

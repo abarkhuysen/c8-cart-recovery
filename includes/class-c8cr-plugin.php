@@ -205,7 +205,7 @@ class C8CR_Plugin {
     public static function create_tables() {
         global $wpdb;
 
-        $table_name      = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name      = $wpdb->prefix . 'c8cr_abandoned_carts';
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (
@@ -281,7 +281,7 @@ class C8CR_Plugin {
      */
     public static function get_cart( $cart_id ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         return $wpdb->get_row(
             $wpdb->prepare(
@@ -299,7 +299,7 @@ class C8CR_Plugin {
      */
     public static function get_cart_by_token( $token ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         return $wpdb->get_row(
             $wpdb->prepare(
@@ -317,7 +317,7 @@ class C8CR_Plugin {
      */
     public static function get_cart_by_session( $session_id ) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'wc_abandoned_carts';
+        $table_name = $wpdb->prefix . 'c8cr_abandoned_carts';
 
         return $wpdb->get_row(
             $wpdb->prepare(
