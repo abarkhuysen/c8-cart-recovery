@@ -4,7 +4,7 @@ Donate link: https://example.com/donate
 Tags: woocommerce, abandoned cart, cart recovery, email, marketing
 Requires at least: 6.0
 Tested up to: 6.7
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -89,6 +89,13 @@ Yes, from the abandoned carts list, you can resend recovery emails to individual
 
 == Changelog ==
 
+= 1.2.0 =
+* Refactored codebase to use PHP namespaces (PSR-4 standard)
+* Added autoloader for improved class loading
+* Modernized code architecture under Creative8\CartRecovery namespace
+* Improved code organization and maintainability
+* No functional changes - internal refactoring only
+
 = 1.1.0 =
 * Rebranded plugin from WC Cart Recovery to C8 Cart Recovery (Creative8)
 * Renamed all code prefixes from WCCR/wccr to C8CR/c8cr
@@ -110,6 +117,9 @@ Yes, from the abandoned carts list, you can resend recovery emails to individual
 * HPOS compatibility
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Internal code refactoring to use PHP namespaces. No functional changes - update safely.
 
 = 1.1.0 =
 Plugin rebranding and database migration. Existing data will be automatically migrated to the new table name.

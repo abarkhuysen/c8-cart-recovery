@@ -3,7 +3,7 @@
  * Plugin Name: C8 Cart Recovery
  * Plugin URI: https://github.com/abarkhuysen/c8-cart-recovery
  * Description: Recover abandoned carts by sending reminder emails to customers who don't complete checkout.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Arthur Barkhuysen
  * Author URI: https://github.com/arthurbarkhuysen
  * License: GPL v2 or later
@@ -23,11 +23,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'C8CR_VERSION', '1.1.0' );
+define( 'C8CR_VERSION', '1.2.0' );
 define( 'C8CR_PLUGIN_FILE', __FILE__ );
 define( 'C8CR_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'C8CR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'C8CR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
+// Load autoloader
+require_once C8CR_PLUGIN_PATH . 'includes/autoload.php';
+
+// Import namespaced classes
+use Creative8\CartRecovery\Plugin;
 
 /**
  * Add settings link to plugin action links
@@ -110,11 +116,8 @@ function c8cr_init() {
         return;
     }
 
-    // Load plugin classes
-    require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-plugin.php';
-
-    // Initialize the plugin
-    C8CR_Plugin::instance();
+    // Initialize the plugin (autoloader handles class loading)
+    Plugin::instance();
 }
 add_action( 'plugins_loaded', 'c8cr_init' );
 
@@ -132,14 +135,11 @@ function c8cr_activate() {
         );
     }
 
-    // Load plugin class for activation
-    require_once C8CR_PLUGIN_PATH . 'includes/class-c8cr-plugin.php';
-
-    // Create database tables
-    C8CR_Plugin::create_tables();
+    // Create database tables (autoloader handles class loading)
+    Plugin::create_tables();
 
     // Schedule cron events
-    C8CR_Plugin::schedule_cron();
+    Plugin::schedule_cron();
 
     // Set default options
     add_option( 'c8cr_enabled', 'yes' );
