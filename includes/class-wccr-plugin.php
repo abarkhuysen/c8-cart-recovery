@@ -76,7 +76,7 @@ class WCCR_Plugin {
         require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-cart-tracker.php';
         require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-cart-recovery.php';
         require_once WCCR_PLUGIN_PATH . 'includes/class-wccr-cron-handler.php';
-        require_once WCCR_PLUGIN_PATH . 'includes/emails/class-wccr-email-abandoned-cart.php';
+        // Email class is loaded via woocommerce_email_classes filter to ensure WC_Email exists
 
         if ( is_admin() ) {
             require_once WCCR_PLUGIN_PATH . 'includes/admin/class-wccr-admin.php';
@@ -125,6 +125,8 @@ class WCCR_Plugin {
      * @return array
      */
     public function register_email_class( $email_classes ) {
+        // Load the email class here when WC_Email is available
+        require_once WCCR_PLUGIN_PATH . 'includes/emails/class-wccr-email-abandoned-cart.php';
         $email_classes['WCCR_Email_Abandoned_Cart'] = new WCCR_Email_Abandoned_Cart();
         return $email_classes;
     }

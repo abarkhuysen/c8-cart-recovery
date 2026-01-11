@@ -86,10 +86,12 @@ if ( ! empty( $cart_items ) ) :
             </tr>
         </tfoot>
     </table>
+<?php else : ?>
+    <p><em><?php esc_html_e( 'Your cart items are no longer available. Click the button below to browse our products.', 'wc-cart-recovery' ); ?></em></p>
 <?php endif; ?>
 
 <p style="margin: 30px 0; text-align: center;">
-    <a href="<?php echo esc_url( $recovery_url ); ?>" style="background-color: #7f54b3; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">
+    <a href="<?php echo esc_url( $recovery_url ); ?>" style="background-color: #841d95; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">
         <?php esc_html_e( 'Complete Your Purchase', 'wc-cart-recovery' ); ?>
     </a>
 </p>
@@ -101,16 +103,6 @@ if ( ! empty( $cart_items ) ) :
 <?php if ( $additional_content ) : ?>
     <p><?php echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) ); ?></p>
 <?php endif; ?>
-
-<p style="font-size: 12px; color: #888888; margin-top: 30px;">
-    <?php
-    printf(
-        /* translators: %s: Unsubscribe link */
-        esc_html__( 'Don\'t want to receive these emails? %s', 'wc-cart-recovery' ),
-        '<a href="' . esc_url( $unsubscribe_url ) . '">' . esc_html__( 'Unsubscribe', 'wc-cart-recovery' ) . '</a>'
-    );
-    ?>
-</p>
 
 <?php
 /*

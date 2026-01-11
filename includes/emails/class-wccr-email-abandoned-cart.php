@@ -38,6 +38,13 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
     public $unsubscribe_url;
 
     /**
+     * Whether we are in preview mode
+     *
+     * @var bool
+     */
+    protected $is_preview = false;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -58,6 +65,9 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
 
         // Call parent constructor
         parent::__construct();
+
+        // Hook into email preview preparation
+        add_filter( 'woocommerce_prepare_email_for_preview', array( $this, 'prepare_for_preview' ) );
     }
 
     /**
@@ -85,6 +95,75 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
      */
     public function get_default_additional_content() {
         return __( 'Need help? Contact us anytime.', 'wc-cart-recovery' );
+    }
+
+    /**
+     * Prepare the email for preview mode
+     *
+     * @param WC_Email $email The email object being prepared.
+     * @return WC_Email
+     */
+    public function prepare_for_preview( $email ) {
+        if ( $email->id !== $this->id ) {
+            return $email;
+        }
+
+        $this->is_preview      = true;
+        $this->cart_data       = $this->get_dummy_cart_data();
+        $this->recovery_url    = home_url( '/?wccr_recover_cart=preview_token_example' );
+        $this->unsubscribe_url = home_url( '/?wccr_unsubscribe=preview_token_example' );
+
+        // Set placeholders for preview
+        $this->placeholders['{customer_first_name}'] = 'John';
+        $this->placeholders['{cart_total}']          = wc_price( $this->cart_data->cart_total, array( 'currency' => $this->cart_data->currency ) );
+        $this->placeholders['{recovery_url}']        = $this->recovery_url;
+
+        return $this;
+    }
+
+    /**
+     * Get dummy cart data for email preview
+     *
+     * @return object
+     */
+    protected function get_dummy_cart_data() {
+        $dummy_cart = new stdClass();
+
+        $dummy_cart->id              = 12345;
+        $dummy_cart->user_email      = 'customer@example.com';
+        $dummy_cart->user_first_name = 'John';
+        $dummy_cart->user_phone      = '555-555-5555';
+        $dummy_cart->cart_total      = 149.97;
+        $dummy_cart->currency        = get_woocommerce_currency();
+        $dummy_cart->recovery_token  = 'preview_token_example';
+        $dummy_cart->created_at      = current_time( 'mysql' );
+
+        // Create dummy cart contents with preview products
+        $dummy_cart->cart_contents = serialize( array(
+            array(
+                'product_id'   => 0,
+                'variation_id' => 0,
+                'quantity'     => 2,
+                'line_total'   => 49.98,
+                'preview_name' => __( 'Sample Product', 'wc-cart-recovery' ),
+                'preview_price' => 24.99,
+            ),
+            array(
+                'product_id'   => 0,
+                'variation_id' => 0,
+                'quantity'     => 1,
+                'line_total'   => 99.99,
+                'preview_name' => __( 'Premium Course Bundle', 'wc-cart-recovery' ),
+                'preview_price' => 99.99,
+            ),
+        ) );
+
+        /**
+         * Filter the dummy cart data used in email preview.
+         *
+         * @param object $dummy_cart The dummy cart object.
+         */
+        return apply_filters( 'wccr_email_preview_dummy_cart', $dummy_cart );
     }
 
     /**
@@ -247,11 +326,23 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
         }
 
         foreach ( $cart_contents as $cart_item ) {
-            $product_id   = isset( $cart_item['variation_id'] ) && $cart_item['variation_id']
+            $quantity = isset( $cart_item['quantity'] ) ? $cart_item['quantity'] : 1;
+
+            // Handle preview mode with dummy products
+            if ( $this->is_preview && isset( $cart_item['preview_name'] ) ) {
+                $items[] = array(
+                    'product'    => $this->create_dummy_product( $cart_item['preview_name'], $cart_item['preview_price'] ),
+                    'quantity'   => $quantity,
+                    'line_total' => isset( $cart_item['line_total'] ) ? $cart_item['line_total'] : $cart_item['preview_price'] * $quantity,
+                );
+                continue;
+            }
+
+            // Normal mode - fetch real products
+            $product_id = isset( $cart_item['variation_id'] ) && $cart_item['variation_id']
                 ? $cart_item['variation_id']
                 : $cart_item['product_id'];
-            $quantity     = isset( $cart_item['quantity'] ) ? $cart_item['quantity'] : 1;
-            $product      = wc_get_product( $product_id );
+            $product    = wc_get_product( $product_id );
 
             if ( ! $product ) {
                 continue;
@@ -265,5 +356,20 @@ class WCCR_Email_Abandoned_Cart extends WC_Email {
         }
 
         return $items;
+    }
+
+    /**
+     * Create a dummy product for email preview
+     *
+     * @param string $name  Product name.
+     * @param float  $price Product price.
+     * @return WC_Product
+     */
+    protected function create_dummy_product( $name, $price ) {
+        $product = new WC_Product();
+        $product->set_name( $name );
+        $product->set_price( $price );
+
+        return $product;
     }
 }

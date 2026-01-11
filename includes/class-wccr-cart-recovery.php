@@ -27,11 +27,11 @@ class WCCR_Cart_Recovery {
      * Initialize hooks
      */
     private function init_hooks() {
-        // Handle recovery URL
-        add_action( 'init', array( $this, 'handle_recovery_request' ), 5 );
+        // Handle recovery URL - use template_redirect to ensure WooCommerce is fully loaded
+        add_action( 'template_redirect', array( $this, 'handle_recovery_request' ) );
 
         // Add unsubscribe handling
-        add_action( 'init', array( $this, 'handle_unsubscribe_request' ), 5 );
+        add_action( 'template_redirect', array( $this, 'handle_unsubscribe_request' ) );
     }
 
     /**
@@ -39,6 +39,11 @@ class WCCR_Cart_Recovery {
      */
     public function handle_recovery_request() {
         if ( ! isset( $_GET['wccr_recover_cart'] ) ) {
+            return;
+        }
+
+        // Ensure WooCommerce is available
+        if ( ! function_exists( 'WC' ) || ! WC() ) {
             return;
         }
 
@@ -95,9 +100,24 @@ class WCCR_Cart_Recovery {
      * @param object $cart Cart object from database.
      */
     private function restore_cart( $cart ) {
+        // Ensure WooCommerce is available
+        if ( ! function_exists( 'WC' ) || ! WC() ) {
+            return;
+        }
+
         // Initialize WooCommerce session if needed
-        if ( ! WC()->session ) {
+        if ( is_null( WC()->session ) ) {
             WC()->initialize_session();
+        }
+
+        // Ensure customer session cookie is set
+        if ( WC()->session && ! WC()->session->has_session() ) {
+            WC()->session->set_customer_session_cookie( true );
+        }
+
+        // Ensure cart is available
+        if ( is_null( WC()->cart ) ) {
+            WC()->cart = new WC_Cart();
         }
 
         // Clear current cart
@@ -164,6 +184,11 @@ class WCCR_Cart_Recovery {
      */
     public function handle_unsubscribe_request() {
         if ( ! isset( $_GET['wccr_unsubscribe'] ) ) {
+            return;
+        }
+
+        // Ensure WooCommerce is available
+        if ( ! function_exists( 'WC' ) || ! WC() ) {
             return;
         }
 
