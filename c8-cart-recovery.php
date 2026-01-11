@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: C8 Cart Recovery
- * Plugin URI: https://github.com/arthurbarkhuysen/wc-cart-recovery
+ * Plugin URI: https://github.com/abarkhuysen/c8-cart-recovery
  * Description: Recover abandoned carts by sending reminder emails to customers who don't complete checkout.
  * Version: 1.0.0
  * Author: Arthur Barkhuysen
  * Author URI: https://github.com/arthurbarkhuysen
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: wc-cart-recovery
+ * Text Domain: c8-cart-recovery
  * Domain Path: /languages
  * Requires at least: 6.0
  * Requires PHP: 8.1
