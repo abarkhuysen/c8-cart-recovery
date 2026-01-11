@@ -330,7 +330,7 @@ class C8CR_Admin_List_Table extends WP_List_Table {
                         'action'  => 'resend',
                         'cart_id' => $item->id,
                     ),
-                    admin_url( 'admin.php?page=wccr-abandoned-carts' )
+                    admin_url( 'admin.php?page=c8cr-abandoned-carts' )
                 ),
                 'c8cr_action_' . $item->id
             );
@@ -349,7 +349,7 @@ class C8CR_Admin_List_Table extends WP_List_Table {
                     'action'  => 'delete',
                     'cart_id' => $item->id,
                 ),
-                admin_url( 'admin.php?page=wccr-abandoned-carts' )
+                admin_url( 'admin.php?page=c8cr-abandoned-carts' )
             ),
             'c8cr_action_' . $item->id
         );

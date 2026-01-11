@@ -49,7 +49,7 @@ class C8CR_Admin {
             __( 'Abandoned Carts', 'c8-cart-recovery' ),
             __( 'Abandoned Carts', 'c8-cart-recovery' ),
             'manage_woocommerce',
-            'wccr-abandoned-carts',
+            'c8cr-abandoned-carts',
             array( $this, 'render_admin_page' )
         );
     }
@@ -60,7 +60,7 @@ class C8CR_Admin {
      * @param string $hook Current admin page hook.
      */
     public function enqueue_admin_scripts( $hook ) {
-        if ( 'woocommerce_page_wccr-abandoned-carts' !== $hook ) {
+        if ( 'woocommerce_page_c8cr-abandoned-carts' !== $hook ) {
             return;
         }
 
@@ -99,7 +99,7 @@ class C8CR_Admin {
                     break;
             }
 
-            wp_safe_redirect( admin_url( 'admin.php?page=wccr-abandoned-carts' ) );
+            wp_safe_redirect( admin_url( 'admin.php?page=c8cr-abandoned-carts' ) );
             exit;
         }
 
@@ -188,15 +188,15 @@ class C8CR_Admin {
             <h1><?php esc_html_e( 'Abandoned Carts', 'c8-cart-recovery' ); ?></h1>
 
             <nav class="nav-tab-wrapper woo-nav-tab-wrapper">
-                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wccr-abandoned-carts&tab=carts' ) ); ?>"
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=c8cr-abandoned-carts&tab=carts' ) ); ?>"
                    class="nav-tab <?php echo 'carts' === $current_tab ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Abandoned Carts', 'c8-cart-recovery' ); ?>
                 </a>
-                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wccr-abandoned-carts&tab=stats' ) ); ?>"
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=c8cr-abandoned-carts&tab=stats' ) ); ?>"
                    class="nav-tab <?php echo 'stats' === $current_tab ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Statistics', 'c8-cart-recovery' ); ?>
                 </a>
-                <a href="<?php echo esc_url( admin_url( 'admin.php?page=wccr-abandoned-carts&tab=settings' ) ); ?>"
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=c8cr-abandoned-carts&tab=settings' ) ); ?>"
                    class="nav-tab <?php echo 'settings' === $current_tab ? 'nav-tab-active' : ''; ?>">
                     <?php esc_html_e( 'Settings', 'c8-cart-recovery' ); ?>
                 </a>

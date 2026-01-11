@@ -30,6 +30,23 @@ define( 'C8CR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'C8CR_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
+ * Add settings link to plugin action links
+ *
+ * @param array $links Plugin action links.
+ * @return array
+ */
+function c8cr_plugin_action_links( $links ) {
+    $settings_link = sprintf(
+        '<a href="%s">%s</a>',
+        admin_url( 'admin.php?page=c8cr-abandoned-carts&tab=settings' ),
+        __( 'Settings', 'c8-cart-recovery' )
+    );
+    array_unshift( $links, $settings_link );
+    return $links;
+}
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'c8cr_plugin_action_links' );
+
+/**
  * Check if WooCommerce is active
  */
 function c8cr_is_woocommerce_active() {
