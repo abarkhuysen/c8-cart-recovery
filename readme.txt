@@ -39,7 +39,7 @@ Creative8 Cart Recovery helps you recover lost sales by automatically tracking a
 
 == Installation ==
 
-1. Upload the `wc-cart-recovery` folder to the `/wp-content/plugins/` directory
+1. Upload the `c8-cart-recovery` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Ensure WooCommerce is installed and activated
 4. Go to WooCommerce > Abandoned Carts to configure settings
