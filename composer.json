@@ -2,13 +2,13 @@
     "name": "arthur/c8-cart-recovery",
     "description": "Recover abandoned carts by sending reminder emails to customers who don't complete checkout.",
     "require-dev": {
-        "php-stubs/wordpress-stubs": "^6.9"
+        "php-stubs/wordpress-stubs": "^6.9",
+        "php-stubs/woocommerce-stubs": "^10.4"
     },
     "authors": [
         {
             "name": "Arthur Barkhuysen",
             "email": "arthur.barkhuysen@gmail.com"
         }
-    ],
-    "require": {}
+    ]
 }
