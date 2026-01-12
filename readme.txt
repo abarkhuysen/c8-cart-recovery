@@ -89,40 +89,18 @@ Yes, from the abandoned carts list, you can resend recovery emails to individual
 
 == Changelog ==
 
-= 1.2.0 =
-* Refactored codebase to use PHP namespaces (PSR-4 standard)
-* Added autoloader for improved class loading
-* Modernized code architecture under Creative8\CartRecovery namespace
-* Improved code organization and maintainability
-* No functional changes - internal refactoring only
-
-= 1.1.0 =
-* Rebranded plugin from WC Cart Recovery to C8 Cart Recovery (Creative8)
-* Renamed all code prefixes from WCCR/wccr to C8CR/c8cr
-* Renamed text domain from wc-cart-recovery to c8-cart-recovery
-* Renamed database table from wc_abandoned_carts to c8cr_abandoned_carts
-* Added automatic migration to rename existing database table
-* Added Settings link on WordPress Plugins page
-* Improved code organization and naming consistency
-
 = 1.0.0 =
 * Initial release
 * Abandoned cart tracking for guests and registered users
 * Guest email capture functionality
 * WooCommerce email integration
-* Admin dashboard with list table
+* Admin dashboard with a list table
 * Statistics and reporting
 * Recovery link functionality
 * Automatic cleanup of old data
 * HPOS compatibility
 
 == Upgrade Notice ==
-
-= 1.2.0 =
-Internal code refactoring to use PHP namespaces. No functional changes - update safely.
-
-= 1.1.0 =
-Plugin rebranding and database migration. Existing data will be automatically migrated to the new table name.
 
 = 1.0.0 =
 Initial release of Creative8 Cart Recovery. Install to start recovering abandoned carts.
